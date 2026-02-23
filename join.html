@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Convoy — Join</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #fff;
+        --fg: #000;
+        --muted: #666;
+        --accent: #000;
+        --soft: #f4f4f4;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+        overflow-x: hidden;
+        line-height: 1.5;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* ===== NAV ===== */
+
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(12px);
+        z-index: 100;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .logo {
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: opacity 0.3s;
+      }
+
+      .logo:hover {
+        opacity: 0.6;
+      }
+
+      .nav-links a {
+        margin-left: 1.5rem;
+        font-size: 0.9rem;
+        color: var(--muted);
+        transition: color 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: var(--fg);
+      }
+
+      /* ===== HERO STYLE HEADER ===== */
+
+      .page-hero {
+        height: 70vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-top: 80px;
+        text-align: center;
+        position: relative;
+      }
+
+      .page-title {
+        font-size: clamp(2rem, 6vw, 4rem);
+        font-weight: 800;
+        letter-spacing: 0.25em;
+        margin-bottom: 1rem;
+      }
+
+      .page-sub {
+        max-width: 520px;
+        color: var(--muted);
+        font-size: 1rem;
+      }
+
+      /* ===== FORM SECTION ===== */
+
+      .form-section {
+        max-width: 600px;
+        margin: 4rem auto 6rem;
+        padding: 3rem;
+        border: 1px solid #ddd;
+        border-radius: 1.5rem;
+        background: var(--soft);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .form-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          120deg,
+          transparent,
+          rgba(0, 0, 0, 0.05),
+          transparent
+        );
+        transform: translateX(-100%);
+        transition: transform 0.8s ease;
+      }
+
+      .form-section:hover::before {
+        transform: translateX(100%);
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group label {
+        font-size: 0.75rem;
+        letter-spacing: 0.15em;
+        color: var(--muted);
+        margin-bottom: 0.6rem;
+        text-transform: uppercase;
+      }
+
+      .form-group input {
+        background: transparent;
+        border: 1px solid var(--fg);
+        padding: 0.8rem 1rem;
+        border-radius: 999px;
+        outline: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus {
+        box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.08);
+      }
+
+      .submit-btn {
+        width: 100%;
+        border: 1px solid var(--fg);
+        background: var(--fg);
+        color: var(--bg);
+        padding: 0.9rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        letter-spacing: 0.15em;
+        cursor: pointer;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      /* ===== FOOTER ===== */
+
+      footer {
+        padding: 3rem 2rem;
+        text-align: center;
+        border-top: 1px solid #ddd;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      /* ===== GRAIN ===== */
+
+      .grain {
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+        pointer-events: none;
+        mix-blend-mode: multiply;
+        animation: grainMove 10s steps(10) infinite;
+      }
+
+      @keyframes grainMove {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(-50px, 50px);
+        }
+      }
+
+      /* ===== RESPONSIVE ===== */
+
+      @media (max-width: 600px) {
+        .form-section {
+          margin: 3rem 1.2rem 4rem;
+          padding: 2rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav>
+      <div class="logo" onclick="window.location.href = 'index.html'">
+        CONVOY
+      </div>
+      <div class="nav-links">
+        <a href="index.html#about">About</a>
+        <a href="index.html#events">Events</a>
+        <a href="join.html">Join</a>
+      </div>
+    </nav>
+
+    <div class="page-hero">
+      <div class="grain"></div>
+      <div class="page-title">WAITING LIST</div>
+      <div class="page-sub">
+        Enter your details below to join the convoy. We’ll let you know when
+        something moves.
+      </div>
+    </div>
+
+    <section class="form-section">
+      <form action="https://formspree.io/f/xkovpjqb" method="POST">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" name="name" required />
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" required />
+        </div>
+
+        <button type="submit" class="submit-btn">JOIN CONVOY</button>
+      </form>
+    </section>
+
+    <footer>
+      <div>CONVOY ¯\_(ツ)_/¯</div>
+      <div>© 2026</div>
+    </footer>
+  </body>
+</html>
