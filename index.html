@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Convoy</title>
+    <title>Convoy — Waitlist</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
@@ -15,6 +16,7 @@
         --bg: #fff;
         --fg: #000;
         --muted: #666;
+        --accent: #000;
         --soft: #f4f4f4;
       }
 
@@ -49,8 +51,8 @@
         padding: 1rem 2rem;
         background: rgba(255, 255, 255, 0.75);
         backdrop-filter: blur(12px);
-        border-bottom: 1px solid #ddd;
         z-index: 100;
+        border-bottom: 1px solid #ddd;
       }
 
       .logo {
@@ -76,68 +78,119 @@
         color: var(--fg);
       }
 
-      /* ===== HERO ===== */
+      /* ===== HERO STYLE HEADER ===== */
 
-      .hero {
-        height: 100vh;
+      .page-hero {
+        height: 70vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        padding-top: 80px;
         text-align: center;
-        padding: 0 2rem;
         position: relative;
       }
 
-      .shrug {
-        font-size: clamp(3rem, 10vw, 6rem);
-        margin-bottom: 1.5rem;
-        letter-spacing: 0.1em;
+      .page-title {
+        font-size: clamp(2rem, 6vw, 4rem);
+        font-weight: 800;
+        letter-spacing: 0.25em;
+        margin-bottom: 1rem;
       }
 
-      .hero-text {
-        font-size: 1.1rem;
+      .page-sub {
+        max-width: 520px;
         color: var(--muted);
+        font-size: 1rem;
+      }
+
+      /* ===== FORM SECTION ===== */
+
+      .form-section {
         max-width: 600px;
-        margin-bottom: 2.5rem;
+        margin: 4rem auto 6rem;
+        padding: 3rem;
+        border: 1px solid #ddd;
+        border-radius: 1.5rem;
+        background: var(--soft);
+        position: relative;
+        overflow: hidden;
       }
 
-      .hero-buttons {
+      .form-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          120deg,
+          transparent,
+          rgba(0, 0, 0, 0.05),
+          transparent
+        );
+        transform: translateX(-100%);
+        transition: transform 0.8s ease;
+      }
+
+      .form-section:hover::before {
+        transform: translateX(100%);
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
         display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-direction: column;
       }
 
-      .btn {
+      .form-group label {
+        font-size: 0.75rem;
+        letter-spacing: 0.15em;
+        color: var(--muted);
+        margin-bottom: 0.6rem;
+        text-transform: uppercase;
+      }
+
+      .form-group input {
+        background: transparent;
         border: 1px solid var(--fg);
-        padding: 0.9rem 1.8rem;
+        padding: 0.8rem 1rem;
+        border-radius: 999px;
+        outline: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus {
+        box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.08);
+      }
+
+      .submit-btn {
+        width: 100%;
+        border: 1px solid var(--fg);
+        background: var(--fg);
+        color: var(--bg);
+        padding: 0.9rem;
         border-radius: 999px;
         font-size: 0.85rem;
         letter-spacing: 0.15em;
-        transition: all 0.3s ease;
         cursor: pointer;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
       }
 
-      .btn-primary {
-        background: var(--fg);
-        color: var(--bg);
-      }
-
-      .btn-primary:hover {
+      .submit-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
       }
 
-      .btn-outline {
-        background: transparent;
-        color: var(--fg);
-      }
+      /* ===== FOOTER ===== */
 
-      .btn-outline:hover {
-        background: var(--fg);
-        color: var(--bg);
-        transform: translateY(-2px);
+      footer {
+        padding: 3rem 2rem;
+        text-align: center;
+        border-top: 1px solid #ddd;
+        color: var(--muted);
+        font-size: 0.8rem;
       }
 
       /* ===== GRAIN ===== */
@@ -160,55 +213,41 @@
         }
       }
 
-      /* ===== FOOTER ===== */
-
-      footer {
-        padding: 3rem 2rem;
-        text-align: center;
-        border-top: 1px solid #ddd;
-        color: var(--muted);
-        font-size: 0.8rem;
-      }
-
       /* ===== RESPONSIVE ===== */
 
       @media (max-width: 600px) {
-        nav {
-          padding: 1rem;
-        }
-
-        .nav-links a {
-          margin-left: 1rem;
+        .form-section {
+          margin: 3rem 1.2rem 4rem;
+          padding: 2rem;
         }
       }
     </style>
   </head>
 
   <body>
-    <nav>
-      <div class="logo" onclick="window.location.href = 'index.html'">
-        CONVOY
-      </div>
-      <div class="nav-links">
-        <a href="about.html">About</a>
-        <a href="events.html">Events</a>
-        <a href="join.html">Join</a>
-      </div>
-    </nav>
-
-    <section class="hero">
+    <div class="page-hero">
       <div class="grain"></div>
-
-      <div class="shrug">¯\_(ツ)_/¯</div>
-
-      <div class="hero-text">
-        creative curated experiences for people, artists and spaces
+      <div class="page-title">WAITING LIST</div>
+      <div class="page-sub">
+        Enter your details below to get first access to our next Convoy event
+        and promotions
       </div>
+    </div>
 
-      <div class="hero-buttons">
-        <a href="events.html" class="btn btn-primary">EVENTS</a>
-        <a href="join.html" class="btn btn-outline">WAITLIST</a>
-      </div>
+    <section class="form-section">
+      <form action="https://formspree.io/f/xkovpjqb" method="POST">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" name="name" required />
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" required />
+        </div>
+
+        <button type="submit" class="submit-btn">JOIN CONVOY</button>
+      </form>
     </section>
 
     <footer>
