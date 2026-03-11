@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events — Convoy</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #fff;
+        --fg: #000;
+        --muted: #666;
+        --soft: #f4f4f4;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+        overflow-x: hidden;
+        line-height: 1.5;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* ===== NAV ===== */
+
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid #ddd;
+        z-index: 100;
+      }
+
+      .logo {
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: opacity 0.3s;
+      }
+
+      .logo:hover {
+        opacity: 0.6;
+      }
+
+      .nav-links a {
+        margin-left: 1.5rem;
+        font-size: 0.9rem;
+        color: var(--muted);
+        transition: color 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: var(--fg);
+      }
+
+      /* ===== PAGE HEADER ===== */
+
+      .page-header {
+        padding: 10rem 2rem 4rem;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .page-header h1 {
+        font-size: clamp(2.5rem, 8vw, 5rem);
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.75rem;
+      }
+
+      .page-header p {
+        font-size: 1rem;
+        color: var(--muted);
+      }
+
+      /* ===== EVENTS LIST ===== */
+
+      .events-section {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+      }
+
+      .events-section h2 {
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.25em;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      /* ===== EVENT CARD ===== */
+
+      .event-card {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 1.5rem;
+        align-items: start;
+        padding: 2.5rem 0;
+        border-bottom: 1px solid #eee;
+        opacity: 0;
+        transform: translateY(18px);
+        animation: fadeUp 0.5s ease forwards;
+      }
+
+      .event-card:nth-child(2) {
+        animation-delay: 0.05s;
+      }
+      .event-card:nth-child(3) {
+        animation-delay: 0.1s;
+      }
+      .event-card:nth-child(4) {
+        animation-delay: 0.15s;
+      }
+      .event-card:nth-child(5) {
+        animation-delay: 0.2s;
+      }
+      .event-card:nth-child(6) {
+        animation-delay: 0.25s;
+      }
+
+      @keyframes fadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .event-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+
+      .event-name {
+        font-size: 1.35rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        line-height: 1.2;
+      }
+
+      .event-details {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem 1.5rem;
+        margin-top: 0.2rem;
+      }
+
+      .event-detail {
+        font-size: 0.82rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .event-detail svg {
+        width: 13px;
+        height: 13px;
+        flex-shrink: 0;
+        opacity: 0.5;
+      }
+
+      .event-description {
+        font-size: 0.9rem;
+        color: #444;
+        max-width: 520px;
+        margin-top: 0.4rem;
+        line-height: 1.6;
+      }
+
+      /* ===== TICKET BUTTON ===== */
+
+      .event-action {
+        display: flex;
+        align-items: flex-start;
+        padding-top: 0.25rem;
+        flex-shrink: 0;
+      }
+
+      .btn {
+        border: 1px solid var(--fg);
+        padding: 0.75rem 1.4rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-family: "Inter", sans-serif;
+        letter-spacing: 0.15em;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        white-space: nowrap;
+        text-transform: uppercase;
+      }
+
+      /* Ticket available — filled button */
+      .btn-tickets {
+        background: var(--fg);
+        color: var(--bg);
+        text-decoration: none;
+      }
+
+      .btn-tickets:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Tickets not yet available — greyed out, not clickable */
+      .btn-soon {
+        background: transparent;
+        color: #bbb;
+        border-color: #ddd;
+        cursor: default;
+        pointer-events: none;
+      }
+
+      /* ===== NO EVENTS ===== */
+
+      .no-events {
+        text-align: center;
+        padding: 5rem 2rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      /* ===== FOOTER ===== */
+
+      footer {
+        padding: 3rem 2rem;
+        text-align: center;
+        border-top: 1px solid #ddd;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      /* ===== GRAIN ===== */
+
+      .grain {
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+        pointer-events: none;
+        mix-blend-mode: multiply;
+        animation: grainMove 10s steps(10) infinite;
+        z-index: 0;
+      }
+
+      @keyframes grainMove {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(-50px, 50px);
+        }
+      }
+
+      /* ===== RESPONSIVE ===== */
+
+      @media (max-width: 640px) {
+        nav {
+          padding: 1rem;
+        }
+        .nav-links a {
+          margin-left: 1rem;
+        }
+
+        .event-card {
+          grid-template-columns: 1fr;
+          gap: 1.25rem;
+        }
+
+        .event-action {
+          padding-top: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="grain"></div>
+
+    <nav>
+      <div class="logo" onclick="window.location.href = 'index.html'">
+        CONVOY
+      </div>
+      <div class="nav-links">
+        <a href="about.html">About</a>
+        <a href="events.html">Events</a>
+        <a href="join.html">Join</a>
+      </div>
+    </nav>
+
+    <div class="page-header">
+      <h1>EVENTS</h1>
+      <p>upcoming experiences — live music, real people, good rooms</p>
+    </div>
+
+    <main class="events-section">
+      <h2>Upcoming</h2>
+
+      <!-- ============================================================
+           HOW TO UPDATE THIS PAGE
+           ============================================================
+
+           TO ADD AN EVENT:
+           Copy one of the .event-card blocks below and paste it here.
+           Fill in the details as needed.
+
+           TO REMOVE AN EVENT:
+           Delete the entire .event-card block for that event.
+
+           TICKET BUTTON STATES:
+           — Tickets not yet available (greyed out):
+               <span class="btn btn-soon">Tickets Coming Soon</span>
+
+           — Tickets available (clickable, links to sales site):
+               <a href="YOUR_TICKET_URL" class="btn btn-tickets" target="_blank">Get Tickets</a>
+
+           ============================================================ -->
+
+      <!-- EVENT 1 -->
+      <article class="event-card">
+        <div class="event-meta">
+          <div class="event-name">Convoy Jazz Night Vol. 1</div>
+          <div class="event-details">
+            <span class="event-detail">
+              <!-- Calendar icon -->
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              Saturday 19 April 2026 — 7:00 PM
+            </span>
+            <span class="event-detail">
+              <!-- Location icon -->
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"
+                />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              The Basement, Sydney CBD
+            </span>
+          </div>
+          <p class="event-description">
+            An intimate evening of live drums, piano and saxophone in a moody
+            underground venue. No phones, no DJs — just musicians and a room
+            full of people who showed up for something real.
+          </p>
+        </div>
+        <div class="event-action">
+          <!-- TOGGLE: swap the line below to switch between states -->
+          <span class="btn btn-soon">Tickets Coming Soon</span>
+          <!-- <a href="https://your-ticket-link.com" class="btn btn-tickets" target="_blank">Get Tickets</a> -->
+        </div>
+      </article>
+
+      <!-- EVENT 2 -->
+      <article class="event-card">
+        <div class="event-meta">
+          <div class="event-name">Convoy Night Vol. 2</div>
+          <div class="event-details">
+            <span class="event-detail">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              Saturday 24 May 2026 — 7:30 PM
+            </span>
+            <span class="event-detail">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"
+                />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              TBA, Inner West Sydney
+            </span>
+          </div>
+          <p class="event-description">
+            Volume two takes the format to a new room — same curated energy,
+            different walls. Details dropping soon for those on the waitlist
+            first.
+          </p>
+        </div>
+        <div class="event-action">
+          <span class="btn btn-soon">Tickets Coming Soon</span>
+          <!-- <a href="https://your-ticket-link.com" class="btn btn-tickets" target="_blank">Get Tickets</a> -->
+        </div>
+      </article>
+
+      <!-- ADD MORE EVENTS ABOVE THIS LINE -->
+    </main>
+
+    <footer>
+      <div>CONVOY ¯\_(ツ)_/¯</div>
+      <div>© 2026</div>
+    </footer>
+  </body>
+</html>
