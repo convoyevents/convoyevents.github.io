@@ -26,7 +26,7 @@
 
       body {
         font-family: "Inter", sans-serif;
-        background: var(--bg);
+        background: #000;
         color: var(--fg);
         overflow-x: hidden;
         line-height: 1.5;
@@ -47,9 +47,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 1rem 2rem;
-        background: rgba(255, 255, 255, 0.75);
-        backdrop-filter: blur(12px);
-        border-bottom: 1px solid #ddd;
+        background: transparent;
         z-index: 100;
       }
 
@@ -59,6 +57,7 @@
         font-size: 1.1rem;
         cursor: pointer;
         transition: opacity 0.3s;
+        color: #fff;
       }
 
       .logo:hover {
@@ -68,12 +67,12 @@
       .nav-links a {
         margin-left: 1.5rem;
         font-size: 0.9rem;
-        color: var(--muted);
+        color: rgba(255, 255, 255, 0.7);
         transition: color 0.3s;
       }
 
       .nav-links a:hover {
-        color: var(--fg);
+        color: #fff;
       }
 
       /* ===== HERO ===== */
@@ -87,17 +86,62 @@
         text-align: center;
         padding: 0 2rem;
         position: relative;
+        overflow: hidden;
+        background: #000;
+      }
+
+      /* ===== VIDEO BACKGROUND ===== */
+
+      .video-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+
+      .video-bg video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.45);
+      }
+
+      /* Gradient overlay: darker at bottom */
+      .video-bg::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.1) 0%,
+          rgba(0, 0, 0, 0.15) 40%,
+          rgba(0, 0, 0, 0.55) 75%,
+          rgba(0, 0, 0, 0.85) 100%
+        );
+        pointer-events: none;
+      }
+
+      /* ===== HERO CONTENT ===== */
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
       .shrug {
         font-size: clamp(3rem, 10vw, 6rem);
         margin-bottom: 1.5rem;
         letter-spacing: 0.1em;
+        color: #fff;
       }
 
       .hero-text {
         font-size: 1.1rem;
-        color: var(--muted);
+        color: rgba(255, 255, 255, 0.75);
         max-width: 600px;
         margin-bottom: 2.5rem;
       }
@@ -110,7 +154,7 @@
       }
 
       .btn {
-        border: 1px solid var(--fg);
+        border: 1px solid #fff;
         padding: 0.9rem 1.8rem;
         border-radius: 999px;
         font-size: 0.85rem;
@@ -120,23 +164,23 @@
       }
 
       .btn-primary {
-        background: var(--fg);
-        color: var(--bg);
+        background: #fff;
+        color: #000;
       }
 
       .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
       }
 
       .btn-outline {
         background: transparent;
-        color: var(--fg);
+        color: #fff;
       }
 
       .btn-outline:hover {
-        background: var(--fg);
-        color: var(--bg);
+        background: #fff;
+        color: #000;
         transform: translateY(-2px);
       }
 
@@ -145,19 +189,16 @@
       .grain {
         position: absolute;
         inset: 0;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+        z-index: 2;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
         pointer-events: none;
-        mix-blend-mode: multiply;
+        mix-blend-mode: overlay;
         animation: grainMove 10s steps(10) infinite;
       }
 
       @keyframes grainMove {
-        0% {
-          transform: translate(0, 0);
-        }
-        100% {
-          transform: translate(-50px, 50px);
-        }
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(-50px, 50px); }
       }
 
       /* ===== FOOTER ===== */
@@ -196,17 +237,36 @@
     </nav>
 
     <section class="hero">
-      <div class="grain"></div>
-
-      <div class="shrug">¯\_(ツ)_/¯</div>
-
-      <div class="hero-text">
-        A space for people who appreciate art and elegant nightlife
+      <!-- Video background -->
+      <div class="video-bg">
+        <video
+          id="bg-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          disablePictureInPicture
+          preload="auto"
+        >
+          <source src="backgroundvideo.mp4" type="video/mp4" />
+        </video>
       </div>
 
-      <div class="hero-buttons">
-        <a href="events.html" class="btn btn-primary">EVENTS</a>
-        <a href="join.html" class="btn btn-outline">COMMUNITY</a>
+      <!-- Grain texture -->
+      <div class="grain"></div>
+
+      <!-- Hero content -->
+      <div class="hero-content">
+        <div class="shrug">¯\_(ツ)_/¯</div>
+
+        <div class="hero-text">
+          A space for people who appreciate art and elegant nightlife
+        </div>
+
+        <div class="hero-buttons">
+          <a href="events.html" class="btn btn-primary">EVENTS</a>
+          <a href="join.html" class="btn btn-outline">COMMUNITY</a>
+        </div>
       </div>
     </section>
 
@@ -214,5 +274,38 @@
       <div>CONVOY ¯\_(ツ)_/¯</div>
       <div>© 2026</div>
     </footer>
+
+    <script>
+      const video = document.getElementById('bg-video');
+
+      // Enforce muted in JS too — required for autoplay policy on all mobile browsers
+      video.muted = true;
+
+      // Attempt autoplay immediately
+      const playPromise = video.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay blocked — play on first touch/click instead
+          const unlockPlay = () => {
+            video.play();
+            document.removeEventListener('touchstart', unlockPlay);
+            document.removeEventListener('touchend', unlockPlay);
+            document.removeEventListener('click', unlockPlay);
+          };
+
+          document.addEventListener('touchstart', unlockPlay, { passive: true });
+          document.addEventListener('touchend', unlockPlay, { passive: true });
+          document.addEventListener('click', unlockPlay);
+        });
+      }
+
+      // Resume if browser pauses when switching tabs/apps
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          video.play().catch(() => {});
+        }
+      });
+    </script>
   </body>
 </html>
