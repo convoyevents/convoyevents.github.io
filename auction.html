@@ -6,6 +6,7 @@
     <title>Convoy — Auction</title>
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
       :root {
@@ -69,7 +70,6 @@
         background: var(--gallery-wall);
       }
 
-      /* Ceiling light */
       .gallery-wrapper::before {
         content: '';
         position: fixed;
@@ -79,7 +79,6 @@
         z-index: 2;
       }
 
-      /* Floor line */
       .gallery-wrapper::after {
         content: '';
         position: fixed;
@@ -161,7 +160,6 @@
         z-index: 1;
       }
 
-      /* Empty canvas — plain off-white, no colour */
       .frame .artwork-canvas {
         display: block;
         width: 300px;
@@ -253,6 +251,7 @@
         font-size: 1.8rem;
         line-height: 1;
         color: var(--fg);
+        transition: color 0.4s;
       }
 
       .bid-amount.reserve-met { color: #2a7a2a; }
@@ -294,6 +293,7 @@
       }
       .bid-open-btn:hover { opacity: 0.78; transform: translateY(-1px); }
       .bid-open-btn:active { transform: translateY(0); }
+      .bid-open-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
       .bid-status { font-size: 0.68rem; color: var(--muted); min-height: 1rem; letter-spacing: 0.05em; }
       .bid-status.success { color: #2a7a2a; }
@@ -303,9 +303,14 @@
       /* Bid history */
       .bid-history { display: flex; flex-direction: column; gap: 0.3rem; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 0.8rem; }
       .bid-history-label { font-size: 0.58rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(0,0,0,0.22); margin-bottom: 0.2rem; }
-      .bid-entry { display: flex; justify-content: space-between; font-size: 0.73rem; color: rgba(0,0,0,0.3); }
+      .bid-entry { display: flex; justify-content: space-between; font-size: 0.73rem; color: rgba(0,0,0,0.3); transition: color 0.3s; }
       .bid-entry:first-of-type { color: rgba(0,0,0,0.6); }
       .bid-entry-bidder { font-style: italic; }
+      .bid-entry.new-bid { animation: flashIn 0.6s ease; }
+      @keyframes flashIn { 0%{background:rgba(42,122,42,0.08)} 100%{background:transparent} }
+
+      /* Loading state */
+      .bid-loading { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.08em; }
 
       /* ===== NAV CONTROLS ===== */
       .gallery-nav {
@@ -348,7 +353,6 @@
       }
       .gallery-dot.active { background: var(--fg); width: 18px; border-radius: 2px; }
 
-      /* Artwork index */
       .artwork-index {
         position: fixed;
         top: 50%;
@@ -520,9 +524,7 @@
       .modal-input.with-prefix { padding-left: 1.5rem; }
 
       .modal-hint { font-size: 0.62rem; color: rgba(0,0,0,0.28); margin-top: 0.15rem; }
-
       .modal-error { font-size: 0.7rem; color: #b03030; min-height: 1rem; }
-
       .modal-note { font-size: 0.68rem; color: rgba(0,0,0,0.3); line-height: 1.65; }
 
       .modal-actions { display: flex; gap: 0.65rem; margin-top: 0.4rem; }
@@ -543,6 +545,28 @@
       }
       .modal-btn.confirm { background: var(--fg); color: #fff; border-color: var(--fg); }
       .modal-btn:hover { opacity: 0.72; }
+      .modal-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+      /* ===== TOAST ===== */
+      .toast {
+        position: fixed;
+        bottom: 6rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--fg);
+        color: var(--bg);
+        padding: 0.7rem 1.4rem;
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        border-radius: 2px;
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+        z-index: 400;
+        white-space: nowrap;
+      }
+      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+      .toast.error { background: #b03030; }
 
       /* ===== FOOTER ===== */
       footer {
@@ -578,6 +602,7 @@
 
   <body>
     <div class="grain"></div>
+    <div class="toast" id="toast"></div>
 
     <!-- NAV -->
     <nav>
@@ -623,18 +648,15 @@
               </div>
               <div class="artwork-desc">Artwork description. Describe the work, the artist's practice, and what makes this piece significant.</div>
               <div class="info-divider"></div>
-              <div class="auction-block" data-lot="0" data-end="2026-05-10T20:00:00" data-current="3200" data-min="3400" data-reserve="4000">
+              <div class="auction-block" data-lot="0" data-end="2026-05-10T20:00:00" data-reserve="4000" data-start-min="3400">
                 <div class="bid-row">
-                  <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-0">$3,200</div></div>
+                  <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-0">—</div></div>
                   <div class="countdown-wrap"><div class="bid-label" style="text-align:right;">Closes In</div><div class="countdown" id="countdown-0"></div></div>
                 </div>
-                <button class="bid-open-btn" onclick="openBidModal(0,'Artwork Title')">Place a Bid</button>
-                <div class="bid-status" id="bid-status-0"></div>
+                <button class="bid-open-btn" id="bid-btn-0" onclick="openBidModal(0,'Artwork Title')">Place a Bid</button>
+                <div class="bid-status" id="bid-status-0"><span class="bid-loading">Loading bids…</span></div>
                 <div class="bid-history" id="bid-history-0">
                   <div class="bid-history-label">Recent Bids</div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">A***e</span><span>$3,200</span></div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">m***k</span><span>$2,800</span></div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">J***n</span><span>$2,400</span></div>
                 </div>
               </div>
             </div>
@@ -657,17 +679,15 @@
               </div>
               <div class="artwork-desc">Artwork description. Describe the work, the artist's practice, and what makes this piece significant.</div>
               <div class="info-divider"></div>
-              <div class="auction-block" data-lot="1" data-end="2026-05-11T18:00:00" data-current="1800" data-min="2000" data-reserve="2500">
+              <div class="auction-block" data-lot="1" data-end="2026-05-11T18:00:00" data-reserve="2500" data-start-min="2000">
                 <div class="bid-row">
-                  <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-1">$1,800</div></div>
+                  <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-1">—</div></div>
                   <div class="countdown-wrap"><div class="bid-label" style="text-align:right;">Closes In</div><div class="countdown" id="countdown-1"></div></div>
                 </div>
-                <button class="bid-open-btn" onclick="openBidModal(1,'Artwork Title')">Place a Bid</button>
-                <div class="bid-status" id="bid-status-1"></div>
+                <button class="bid-open-btn" id="bid-btn-1" onclick="openBidModal(1,'Artwork Title')">Place a Bid</button>
+                <div class="bid-status" id="bid-status-1"><span class="bid-loading">Loading bids…</span></div>
                 <div class="bid-history" id="bid-history-1">
                   <div class="bid-history-label">Recent Bids</div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">s***h</span><span>$1,800</span></div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">R***l</span><span>$1,500</span></div>
                 </div>
               </div>
             </div>
@@ -690,18 +710,15 @@
               </div>
               <div class="artwork-desc">Artwork description. Describe the work, the artist's practice, and what makes this piece significant.</div>
               <div class="info-divider"></div>
-              <div class="auction-block" data-lot="2" data-end="2026-05-12T21:00:00" data-current="5500" data-min="5700" data-reserve="5000">
+              <div class="auction-block" data-lot="2" data-end="2026-05-12T21:00:00" data-reserve="5000" data-start-min="5700">
                 <div class="bid-row">
-                  <div><div class="bid-label">Current Bid</div><div class="bid-amount reserve-met" id="bid-current-2">$5,500</div></div>
+                  <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-2">—</div></div>
                   <div class="countdown-wrap"><div class="bid-label" style="text-align:right;">Closes In</div><div class="countdown" id="countdown-2"></div></div>
                 </div>
-                <button class="bid-open-btn" onclick="openBidModal(2,'Artwork Title')">Place a Bid</button>
-                <div class="bid-status reserve-met" id="bid-status-2">Reserve met</div>
+                <button class="bid-open-btn" id="bid-btn-2" onclick="openBidModal(2,'Artwork Title')">Place a Bid</button>
+                <div class="bid-status" id="bid-status-2"><span class="bid-loading">Loading bids…</span></div>
                 <div class="bid-history" id="bid-history-2">
                   <div class="bid-history-label">Recent Bids</div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">C***a</span><span>$5,500</span></div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">p***r</span><span>$5,000</span></div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">A***e</span><span>$4,200</span></div>
                 </div>
               </div>
             </div>
@@ -724,17 +741,15 @@
               </div>
               <div class="artwork-desc">Artwork description. Describe the work, the artist's practice, and what makes this piece significant.</div>
               <div class="info-divider"></div>
-              <div class="auction-block" data-lot="3" data-end="2026-05-09T19:00:00" data-current="2100" data-min="2300" data-reserve="2000">
+              <div class="auction-block" data-lot="3" data-end="2026-05-09T19:00:00" data-reserve="2000" data-start-min="2300">
                 <div class="bid-row">
-                  <div><div class="bid-label">Current Bid</div><div class="bid-amount reserve-met" id="bid-current-3">$2,100</div></div>
+                  <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-3">—</div></div>
                   <div class="countdown-wrap"><div class="bid-label" style="text-align:right;">Closes In</div><div class="countdown" id="countdown-3"></div></div>
                 </div>
-                <button class="bid-open-btn" onclick="openBidModal(3,'Artwork Title')">Place a Bid</button>
-                <div class="bid-status reserve-met" id="bid-status-3">Reserve met</div>
+                <button class="bid-open-btn" id="bid-btn-3" onclick="openBidModal(3,'Artwork Title')">Place a Bid</button>
+                <div class="bid-status" id="bid-status-3"><span class="bid-loading">Loading bids…</span></div>
                 <div class="bid-history" id="bid-history-3">
                   <div class="bid-history-label">Recent Bids</div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">T***o</span><span>$2,100</span></div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">l***a</span><span>$1,900</span></div>
                 </div>
               </div>
             </div>
@@ -757,16 +772,15 @@
               </div>
               <div class="artwork-desc">Artwork description. Describe the work, the artist's practice, and what makes this piece significant.</div>
               <div class="info-divider"></div>
-              <div class="auction-block" data-lot="4" data-end="2026-05-13T17:00:00" data-current="900" data-min="1100" data-reserve="1500">
+              <div class="auction-block" data-lot="4" data-end="2026-05-13T17:00:00" data-reserve="1500" data-start-min="1100">
                 <div class="bid-row">
-                  <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-4">$900</div></div>
+                  <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-4">—</div></div>
                   <div class="countdown-wrap"><div class="bid-label" style="text-align:right;">Closes In</div><div class="countdown" id="countdown-4"></div></div>
                 </div>
-                <button class="bid-open-btn" onclick="openBidModal(4,'Artwork Title')">Place a Bid</button>
-                <div class="bid-status" id="bid-status-4"></div>
+                <button class="bid-open-btn" id="bid-btn-4" onclick="openBidModal(4,'Artwork Title')">Place a Bid</button>
+                <div class="bid-status" id="bid-status-4"><span class="bid-loading">Loading bids…</span></div>
                 <div class="bid-history" id="bid-history-4">
                   <div class="bid-history-label">Recent Bids</div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">n***i</span><span>$900</span></div>
                 </div>
               </div>
             </div>
@@ -789,18 +803,15 @@
               </div>
               <div class="artwork-desc">Artwork description. Describe the work, the artist's practice, and what makes this piece significant.</div>
               <div class="info-divider"></div>
-              <div class="auction-block" data-lot="5" data-end="2026-05-14T20:00:00" data-current="4100" data-min="4300" data-reserve="3500">
+              <div class="auction-block" data-lot="5" data-end="2026-05-14T20:00:00" data-reserve="3500" data-start-min="4300">
                 <div class="bid-row">
-                  <div><div class="bid-label">Current Bid</div><div class="bid-amount reserve-met" id="bid-current-5">$4,100</div></div>
+                  <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-5">—</div></div>
                   <div class="countdown-wrap"><div class="bid-label" style="text-align:right;">Closes In</div><div class="countdown" id="countdown-5"></div></div>
                 </div>
-                <button class="bid-open-btn" onclick="openBidModal(5,'Artwork Title')">Place a Bid</button>
-                <div class="bid-status reserve-met" id="bid-status-5">Reserve met</div>
+                <button class="bid-open-btn" id="bid-btn-5" onclick="openBidModal(5,'Artwork Title')">Place a Bid</button>
+                <div class="bid-status" id="bid-status-5"><span class="bid-loading">Loading bids…</span></div>
                 <div class="bid-history" id="bid-history-5">
                   <div class="bid-history-label">Recent Bids</div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">V***a</span><span>$4,100</span></div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">w***n</span><span>$3,800</span></div>
-                  <div class="bid-entry"><span class="bid-entry-bidder">f***e</span><span>$3,400</span></div>
                 </div>
               </div>
             </div>
@@ -838,17 +849,14 @@
           <div class="modal-title">Place a Bid</div>
           <div class="modal-lot-name" id="modalLotName"></div>
         </div>
-
         <div class="modal-field">
           <div class="modal-label">Your Name</div>
           <input class="modal-input" type="text" id="modalName" placeholder="Full name" autocomplete="name" />
         </div>
-
         <div class="modal-field">
           <div class="modal-label">Contact Number</div>
           <input class="modal-input" type="tel" id="modalPhone" placeholder="+61 4xx xxx xxx" autocomplete="tel" />
         </div>
-
         <div class="modal-field">
           <div class="modal-label">Bid Amount</div>
           <div class="modal-input-wrap">
@@ -857,14 +865,11 @@
           </div>
           <div class="modal-hint" id="modalMinNote"></div>
         </div>
-
         <div class="modal-error" id="modalError"></div>
-
         <div class="modal-note">By confirming you commit to this bid. The highest bidder at close will be contacted to arrange payment and collection.</div>
-
         <div class="modal-actions">
-          <button class="modal-btn" onclick="closeBidModal()">Cancel</button>
-          <button class="modal-btn confirm" onclick="confirmBid()">Confirm Bid</button>
+          <button class="modal-btn" id="modalCancelBtn" onclick="closeBidModal()">Cancel</button>
+          <button class="modal-btn confirm" id="modalConfirmBtn" onclick="confirmBid()">Confirm Bid</button>
         </div>
       </div>
     </div>
@@ -885,23 +890,47 @@
     </footer>
 
     <script>
+      // Global stubs — inline onclick= attributes call these; they delegate to the real functions below
+      function navigate(dir)            { _navigate(dir); }
+      function openBidModal(lot, title) { _openBidModal(lot, title); }
+      function closeBidModal()          { _closeBidModal(); }
+      function confirmBid()             { _confirmBid(); }
+
+      // ===== SUPABASE SETUP =====
+      const SUPABASE_URL = 'https://jijfofohxvstphmnxnva.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImppamZvZm9oeHZzdHBobW54bnZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4NjcwNDQsImV4cCI6MjA5MzQ0MzA0NH0.oUtTi48VL5wwvaxA0nFfVLcFG4FaRwHYJM32Z54qxCE';
+      const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      // ===== CONFIG =====
       const TOTAL_PANELS = 7;
       const ARTWORK_COUNT = 6;
+
+      // Per-lot config (reserve price, starting minimum if no bids yet)
+      const lotConfig = [
+        { reserve: 4000, startMin: 3400 },
+        { reserve: 2500, startMin: 2000 },
+        { reserve: 5000, startMin: 5700 },
+        { reserve: 2000, startMin: 2300 },
+        { reserve: 1500, startMin: 1100 },
+        { reserve: 3500, startMin: 4300 },
+      ];
+
+      const endTimes = [
+        '2026-05-10T20:00:00',
+        '2026-05-11T18:00:00',
+        '2026-05-12T21:00:00',
+        '2026-05-09T19:00:00',
+        '2026-05-13T17:00:00',
+        '2026-05-14T20:00:00',
+      ];
+
+      // Local cache of current highest bid per lot
+      const lotState = lotConfig.map(c => ({ current: null, min: c.startMin, reserve: c.reserve }));
+
+      // ===== GALLERY NAV =====
       let current = 0;
       let isAnimating = false;
 
-      const bidState = [
-        { current: 3200, min: 3400, reserve: 4000, history: [['A***e', 3200], ['m***k', 2800], ['J***n', 2400]] },
-        { current: 1800, min: 2000, reserve: 2500, history: [['s***h', 1800], ['R***l', 1500]] },
-        { current: 5500, min: 5700, reserve: 5000, history: [['C***a', 5500], ['p***r', 5000], ['A***e', 4200]] },
-        { current: 2100, min: 2300, reserve: 2000, history: [['T***o', 2100], ['l***a', 1900]] },
-        { current: 900,  min: 1100, reserve: 1500, history: [['n***i', 900]] },
-        { current: 4100, min: 4300, reserve: 3500, history: [['V***a', 4100], ['w***n', 3800], ['f***e', 3400]] },
-      ];
-
-      let pendingBid = { lot: null, title: null };
-
-      // Build dots
       const dotsEl = document.getElementById('galleryDots');
       for (let i = 0; i < TOTAL_PANELS; i++) {
         const d = document.createElement('button');
@@ -925,7 +954,7 @@
         setTimeout(() => { isAnimating = false; }, 950);
       }
 
-      function navigate(dir) {
+      function _navigate(dir) {
         goTo(Math.max(0, Math.min(TOTAL_PANELS - 1, current + dir)));
       }
 
@@ -950,41 +979,42 @@
         document.getElementById('nextBtn').disabled = current === TOTAL_PANELS - 1;
       }
 
-      // Keyboard
       document.addEventListener('keydown', e => {
         if (document.getElementById('bidModal').classList.contains('visible')) return;
         if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
         if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
       });
 
-      // Wheel
       let wheelAccum = 0, wheelTimer = null;
       document.addEventListener('wheel', e => {
         e.preventDefault();
         wheelAccum += e.deltaX + e.deltaY;
         clearTimeout(wheelTimer);
         wheelTimer = setTimeout(() => {
-          if (Math.abs(wheelAccum) > 40) navigate(wheelAccum > 0 ? 1 : -1);
+          if (Math.abs(wheelAccum) > 40) _navigate(wheelAccum > 0 ? 1 : -1);
           wheelAccum = 0;
         }, 50);
       }, { passive: false });
 
-      // Touch
       let tx0 = 0;
       document.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, { passive: true });
       document.addEventListener('touchend', e => {
         const dx = tx0 - e.changedTouches[0].clientX;
-        if (Math.abs(dx) > 50) navigate(dx > 0 ? 1 : -1);
+        if (Math.abs(dx) > 50) _navigate(dx > 0 ? 1 : -1);
       }, { passive: true });
 
-      // Countdown
-      const endTimes = [...document.querySelectorAll('.auction-block')].map(b => b.dataset.end);
-
+      // ===== COUNTDOWN =====
       function renderCountdown(id, endStr) {
         const el = document.getElementById(id);
         if (!el) return;
         const diff = new Date(endStr) - Date.now();
-        if (diff <= 0) { el.innerHTML = `<span style="font-size:.72rem;color:var(--muted);letter-spacing:.1em">Closed</span>`; return; }
+        if (diff <= 0) {
+          el.innerHTML = `<span style="font-size:.72rem;color:var(--muted);letter-spacing:.1em">Closed</span>`;
+          const lot = parseInt(id.split('-')[1]);
+          const btn = document.getElementById(`bid-btn-${lot}`);
+          if (btn) { btn.disabled = true; btn.textContent = 'Bidding Closed'; }
+          return;
+        }
         const days = Math.floor(diff/86400000);
         const hrs  = Math.floor((diff%86400000)/3600000);
         const mins = Math.floor((diff%3600000)/60000);
@@ -999,14 +1029,133 @@
       tickAll();
       setInterval(tickAll, 1000);
 
-      // Modal
-      function openBidModal(lot, title) {
+      // ===== BID DISPLAY =====
+      function maskName(name) {
+        const n = name.trim();
+        if (n.length <= 1) return n + '***';
+        return n[0].toUpperCase() + '***' + n[n.length - 1].toLowerCase();
+      }
+
+      function renderLotFromBids(lot, bids) {
+        const config = lotConfig[lot];
+        const currentEl = document.getElementById(`bid-current-${lot}`);
+        const statusEl  = document.getElementById(`bid-status-${lot}`);
+        const histEl    = document.getElementById(`bid-history-${lot}`);
+
+        // Clear old entries
+        histEl.querySelectorAll('.bid-entry').forEach(e => e.remove());
+
+        if (bids.length === 0) {
+          currentEl.textContent = 'No bids yet';
+          currentEl.classList.remove('reserve-met');
+          statusEl.textContent = `Opening bid: $${config.startMin.toLocaleString()}`;
+          statusEl.className = 'bid-status';
+          lotState[lot].current = null;
+          lotState[lot].min = config.startMin;
+        } else {
+          const top = bids[0];
+          currentEl.textContent = `$${Number(top.amount).toLocaleString()}`;
+          lotState[lot].current = Number(top.amount);
+          lotState[lot].min = Number(top.amount) + 200;
+
+          if (Number(top.amount) >= config.reserve) {
+            currentEl.classList.add('reserve-met');
+            statusEl.textContent = 'Reserve met';
+            statusEl.className = 'bid-status reserve-met';
+          } else {
+            currentEl.classList.remove('reserve-met');
+            statusEl.textContent = '';
+            statusEl.className = 'bid-status';
+          }
+
+          bids.slice(0, 4).forEach((bid, i) => {
+            const e = document.createElement('div');
+            e.className = 'bid-entry';
+            e.innerHTML = `<span class="bid-entry-bidder">${maskName(bid.bidder_name)}</span><span>$${Number(bid.amount).toLocaleString()}</span>`;
+            histEl.appendChild(e);
+          });
+        }
+      }
+
+      function flashNewBid(lot) {
+        const histEl = document.getElementById(`bid-history-${lot}`);
+        const first = histEl.querySelector('.bid-entry');
+        if (first) {
+          first.classList.remove('new-bid');
+          void first.offsetWidth; // reflow
+          first.classList.add('new-bid');
+        }
+      }
+
+      // ===== LOAD INITIAL BIDS =====
+      async function loadAllBids() {
+        const { data, error } = await db
+          .from('bids')
+          .select('lot, bidder_name, amount, created_at')
+          .order('amount', { ascending: false });
+
+        if (error) {
+          console.error('Error loading bids:', error);
+          for (let i = 0; i < ARTWORK_COUNT; i++) {
+            document.getElementById(`bid-status-${i}`).textContent = 'Could not load bids.';
+          }
+          return;
+        }
+
+        // Group by lot
+        for (let i = 0; i < ARTWORK_COUNT; i++) {
+          const lotBids = data.filter(b => b.lot === i);
+          renderLotFromBids(i, lotBids);
+        }
+      }
+
+      // ===== REAL-TIME SUBSCRIPTION =====
+      function subscribeToRealtime() {
+        db
+          .channel('bids-channel')
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'bids' }, async payload => {
+            const lot = payload.new.lot;
+            // Reload that lot's bids fresh from DB to get correct ordering
+            const { data } = await db
+              .from('bids')
+              .select('lot, bidder_name, amount, created_at')
+              .eq('lot', lot)
+              .order('amount', { ascending: false });
+
+            if (data) {
+              renderLotFromBids(lot, data);
+              flashNewBid(lot);
+              showToast(`New bid on Lot ${String(lot + 1).padStart(3, '0')}!`);
+            }
+          })
+          .subscribe();
+      }
+
+      // ===== TOAST =====
+      let toastTimer = null;
+      function showToast(msg, isError = false) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = 'toast' + (isError ? ' error' : '') + ' show';
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => { t.classList.remove('show'); }, 3000);
+      }
+
+      // ===== MODAL =====
+      let pendingBid = { lot: null, title: null };
+
+      function _openBidModal(lot, title) {
+        // Check if closed
+        if (new Date(endTimes[lot]) <= Date.now()) {
+          showToast('Bidding has closed for this lot.', true);
+          return;
+        }
         pendingBid = { lot, title };
-        const state = bidState[lot];
+        const min = lotState[lot].min;
         document.getElementById('modalLotName').textContent = `Lot ${String(lot+1).padStart(3,'0')} · ${title}`;
-        document.getElementById('modalMinNote').textContent = `Minimum bid: $${state.min.toLocaleString()}`;
-        document.getElementById('modalBidAmount').min = state.min;
-        document.getElementById('modalBidAmount').placeholder = state.min.toLocaleString();
+        document.getElementById('modalMinNote').textContent = `Minimum bid: $${min.toLocaleString()}`;
+        document.getElementById('modalBidAmount').min = min;
+        document.getElementById('modalBidAmount').placeholder = min.toLocaleString();
         document.getElementById('modalName').value = '';
         document.getElementById('modalPhone').value = '';
         document.getElementById('modalBidAmount').value = '';
@@ -1015,55 +1164,73 @@
         setTimeout(() => document.getElementById('modalName').focus(), 350);
       }
 
-      function closeBidModal() {
+      function _closeBidModal() {
         document.getElementById('bidModal').classList.remove('visible');
         pendingBid = { lot: null, title: null };
       }
 
-      function confirmBid() {
+      async function _confirmBid() {
         const { lot } = pendingBid;
         if (lot === null) return;
+
         const name   = document.getElementById('modalName').value.trim();
         const phone  = document.getElementById('modalPhone').value.trim();
         const amount = parseFloat(document.getElementById('modalBidAmount').value);
-        const state  = bidState[lot];
+        const min    = lotState[lot].min;
         const errEl  = document.getElementById('modalError');
 
-        if (!name)                         { errEl.textContent = 'Please enter your name.'; return; }
-        if (!phone)                        { errEl.textContent = 'Please enter a contact number.'; return; }
-        if (!amount || amount < state.min) { errEl.textContent = `Bid must be at least $${state.min.toLocaleString()}.`; return; }
+        if (!name)                  { errEl.textContent = 'Please enter your name.'; return; }
+        if (!phone)                 { errEl.textContent = 'Please enter a contact number.'; return; }
+        if (!amount || amount < min) { errEl.textContent = `Bid must be at least $${min.toLocaleString()}.`; return; }
+
+        // Check auction hasn't closed
+        if (new Date(endTimes[lot]) <= Date.now()) {
+          errEl.textContent = 'Sorry, bidding has closed for this lot.';
+          return;
+        }
 
         errEl.textContent = '';
 
-        const masked = name[0].toUpperCase() + '***' + name[name.length-1].toLowerCase();
-        state.history.unshift([masked, amount]);
-        if (state.history.length > 4) state.history.pop();
-        state.current = amount;
-        state.min = amount + 200;
+        // Disable buttons while submitting
+        const confirmBtn = document.getElementById('modalConfirmBtn');
+        const cancelBtn  = document.getElementById('modalCancelBtn');
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'Placing…';
+        cancelBtn.disabled = true;
 
-        const currentEl = document.getElementById(`bid-current-${lot}`);
-        currentEl.textContent = `$${amount.toLocaleString()}`;
-        if (amount >= state.reserve) currentEl.classList.add('reserve-met');
-
-        const hist = document.getElementById(`bid-history-${lot}`);
-        hist.querySelectorAll('.bid-entry').forEach(e => e.remove());
-        state.history.forEach(([b, a]) => {
-          const e = document.createElement('div');
-          e.className = 'bid-entry';
-          e.innerHTML = `<span class="bid-entry-bidder">${b}</span><span>$${a.toLocaleString()}</span>`;
-          hist.appendChild(e);
+        const { error } = await db.from('bids').insert({
+          lot,
+          bidder_name: name,
+          bidder_phone: phone,
+          amount,
         });
 
-        const statusEl = document.getElementById(`bid-status-${lot}`);
-        statusEl.textContent = amount >= state.reserve ? 'Reserve met · You are highest bidder' : 'You are highest bidder';
-        statusEl.className = 'bid-status success' + (amount >= state.reserve ? ' reserve-met' : '');
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = 'Confirm Bid';
+        cancelBtn.disabled = false;
 
-        closeBidModal();
+        if (error) {
+          // The DB trigger fires if bid is too low — surface that clearly
+          if (error.message && error.message.includes('higher than current highest')) {
+            errEl.textContent = 'Someone just outbid you! Please refresh and try again.';
+          } else {
+            errEl.textContent = 'Something went wrong. Please try again.';
+          }
+          console.error(error);
+          return;
+        }
+
+        _closeBidModal();
+        showToast('Bid placed successfully!');
       }
 
-      document.getElementById('bidModal').addEventListener('click', function(e) { if (e.target === this) closeBidModal(); });
+      document.getElementById('bidModal').addEventListener('click', function(e) {
+        if (e.target === this) _closeBidModal();
+      });
 
+      // ===== INIT =====
       updateControls();
+      loadAllBids().then(() => subscribeToRealtime());
     </script>
   </body>
 </html>
