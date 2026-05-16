@@ -1072,7 +1072,8 @@
       }
 
       function getPanelOffset(idx) {
-        return idx === 0 ? 0 : 100 + (idx - 1) * 108;
+        const dividerVw = window.innerWidth <= 768 ? 0 : 8;
+        return idx === 0 ? 0 : (100 + dividerVw) + (idx - 1) * (100 + dividerVw);
       }
 
       function goTo(idx) {
