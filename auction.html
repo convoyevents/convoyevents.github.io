@@ -167,6 +167,7 @@
         background: #f8f6f1;
         position: relative;
         z-index: 0;
+        object-fit: cover;
       }
 
       .lot-tag {
@@ -226,6 +227,25 @@
         width: 32px;
         height: 1px;
         background: rgba(0,0,0,0.14);
+      }
+
+      /* Proceeds note */
+      .proceeds-note {
+        font-size: 0.62rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(0,0,0,0.28);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .proceeds-note::before {
+        content: '';
+        display: inline-block;
+        width: 16px;
+        height: 1px;
+        background: rgba(0,0,0,0.18);
+        flex-shrink: 0;
       }
 
       /* ===== AUCTION BLOCK ===== */
@@ -547,6 +567,75 @@
       .modal-btn:hover { opacity: 0.72; }
       .modal-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
+      /* ===== T&Cs MODAL ===== */
+      .tcs-overlay {
+        position: fixed; inset: 0;
+        background: rgba(240,237,230,0.85);
+        z-index: 400;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        backdrop-filter: blur(10px);
+      }
+      .tcs-overlay.visible { opacity: 1; pointer-events: all; }
+
+      .tcs-modal {
+        background: #fff;
+        border: 1px solid rgba(0,0,0,0.09);
+        box-shadow: 0 24px 80px rgba(0,0,0,0.13);
+        padding: 2.5rem;
+        max-width: 440px;
+        width: 92%;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        transform: translateY(16px);
+        transition: transform 0.3s;
+        border-radius: 2px;
+      }
+      .tcs-overlay.visible .tcs-modal { transform: translateY(0); }
+
+      .tcs-title {
+        font-family: 'EB Garamond', serif;
+        font-size: 1.45rem;
+        font-weight: 400;
+        color: var(--fg);
+      }
+
+      .tcs-body {
+        font-size: 0.75rem;
+        line-height: 1.8;
+        color: rgba(0,0,0,0.5);
+        font-weight: 300;
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+      }
+
+      .tcs-body p { margin: 0; }
+
+      .tcs-actions { display: flex; gap: 0.65rem; margin-top: 0.5rem; }
+
+      .tcs-btn {
+        flex: 1;
+        padding: 0.8rem;
+        border: 1px solid rgba(0,0,0,0.14);
+        background: none;
+        color: var(--fg);
+        font-size: 0.68rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: opacity 0.25s;
+        border-radius: 2px;
+        font-weight: 500;
+      }
+      .tcs-btn.confirm { background: var(--fg); color: #fff; border-color: var(--fg); }
+      .tcs-btn:hover { opacity: 0.72; }
+
       /* ===== TOAST ===== */
       .toast {
         position: fixed;
@@ -562,7 +651,7 @@
         border-radius: 2px;
         opacity: 0;
         transition: opacity 0.3s, transform 0.3s;
-        z-index: 400;
+        z-index: 500;
         white-space: nowrap;
       }
       .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -584,18 +673,169 @@
 
       /* ===== RESPONSIVE ===== */
       @media (max-width: 768px) {
+
+        /* Hide the decorative horizontal shelf line on mobile */
+        .gallery-wrapper::after { display: none; }
+
+        /* Nav: hide when on an artwork panel, show on entrance */
+        nav {
+          padding: 0.85rem 1.25rem;
+          transition: opacity 0.4s, transform 0.4s;
+        }
+        nav.nav-hidden {
+          opacity: 0;
+          pointer-events: none;
+          transform: translateY(-100%);
+        }
+        .logo { font-size: 0.95rem; }
+        .nav-links a { margin-left: 1rem; font-size: 0.8rem; }
+
+        /* Divider: invisible on mobile — no coloured bar */
+        .gallery-divider {
+          width: 0;
+          background: none;
+        }
+        .gallery-divider::after { display: none; }
+
+        /* Panel: full height, no default padding */
+        .artwork-panel {
+          padding: 0;
+          align-items: flex-start;
+        }
+
+        /* Inner: column layout, scrollable */
         .artwork-inner {
           flex-direction: column;
           align-items: center;
-          gap: 2rem;
+          gap: 0;
+          opacity: 0;
+          transform: translateX(60px);
           overflow-y: auto;
-          max-height: calc(100vh - 7rem);
-          padding-bottom: 4rem;
+          overflow-x: hidden;
+          height: 100vh;
+          width: 100%;
+          max-width: 100%;
+          /* top: enough room for nav (gone on artwork but safe); bottom: room for nav bar */
+          padding: 3.5rem 1.5rem 6rem;
+          -webkit-overflow-scrolling: touch;
         }
-        .frame .artwork-canvas { width: 240px; height: 300px; }
-        .artwork-info { max-width: 100%; width: 100%; }
-        .gallery-divider { width: 5vw; }
+
+        /* Frame section */
+        .frame-wrap {
+          margin-bottom: 2.6rem;
+          margin-top: 1rem;
+        }
+
+        .frame .artwork-canvas {
+          width: 210px;
+          height: 265px;
+        }
+
+        .lot-tag {
+          bottom: -26px;
+          font-size: 0.58rem;
+        }
+
+        /* Info section */
+        .artwork-info {
+          max-width: 100%;
+          width: 100%;
+          gap: 1rem;
+        }
+
+        .artwork-title { font-size: 1.65rem; }
+        .artwork-year  { font-size: 0.68rem; }
+
+        .artwork-desc {
+          font-size: 0.8rem;
+          line-height: 1.7;
+        }
+
+        /* Auction block */
+        .auction-block { gap: 0.75rem; }
+        .bid-amount    { font-size: 1.55rem; }
+        .countdown-num { font-size: 1.2rem; }
+
+        .bid-open-btn {
+          padding: 1rem 1.2rem;
+          font-size: 0.68rem;
+        }
+
+        /* Entrance panel */
+        .entrance-panel { padding: 1.5rem; }
+        .entrance-title  { font-size: clamp(1.8rem, 8vw, 2.5rem); }
+
+        /* Side lot index: hidden */
         .artwork-index { display: none; }
+
+        /* ── Bottom nav bar: persistent, boxed ── */
+        .gallery-nav {
+          bottom: 0;
+          left: 0;
+          right: 0;
+          transform: none;
+          width: 100%;
+          justify-content: center;
+          gap: 0;
+          background: rgba(245, 243, 239, 0.92);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border-top: 1px solid rgba(0,0,0,0.08);
+          padding: 0.7rem 1.5rem;
+          box-sizing: border-box;
+        }
+
+        /* Make arrows look like tappable boxes */
+        .gallery-arrow {
+          opacity: 1;
+          padding: 0.55rem 1.1rem;
+          border: 1px solid rgba(0,0,0,0.13);
+          border-radius: 3px;
+          background: rgba(255,255,255,0.7);
+          margin: 0 0.5rem;
+        }
+        .gallery-arrow:disabled {
+          opacity: 0.25;
+          background: transparent;
+          border-color: rgba(0,0,0,0.07);
+        }
+
+        .gallery-dots { gap: 0.5rem; margin: 0 0.75rem; }
+
+        /* Modals: slide up from bottom sheet */
+        .modal-overlay { align-items: flex-end; }
+        .modal {
+          width: 100%;
+          max-width: 100%;
+          border-radius: 8px 8px 0 0;
+          padding: 1.8rem 1.5rem 2rem;
+          gap: 0.9rem;
+          transform: translateY(100%);
+        }
+        .modal-overlay.visible .modal { transform: translateY(0); }
+
+        .tcs-overlay { align-items: flex-end; }
+        .tcs-modal {
+          width: 100%;
+          max-width: 100%;
+          border-radius: 8px 8px 0 0;
+          padding: 1.8rem 1.5rem 2rem;
+          transform: translateY(100%);
+        }
+        .tcs-overlay.visible .tcs-modal { transform: translateY(0); }
+
+        /* Toast: sit above the nav bar */
+        .toast { bottom: 5rem; }
+      }
+
+      /* Extra small phones */
+      @media (max-width: 390px) {
+        .frame .artwork-canvas {
+          width: 180px;
+          height: 227px;
+        }
+        .artwork-inner { padding: 3rem 1.25rem 6rem; }
+        .artwork-title { font-size: 1.45rem; }
       }
     </style>
   </head>
@@ -623,7 +863,7 @@
           <div class="artwork-inner" style="opacity:1;transform:none;flex-direction:column;align-items:center;text-align:center;gap:1rem;">
             <div class="entrance-sub">Convoy — Live Auction</div>
             <div class="entrance-title">The Collection</div>
-            <div class="entrance-sub" style="margin-top:0.4rem;">6 works · Bidding open</div>
+            <div class="entrance-sub" style="margin-top:0.4rem;">4 works · Bidding open</div>
             <div class="entrance-hint">
               <div class="entrance-line"></div>
               <span>Scroll or arrow to enter</span>
@@ -633,27 +873,30 @@
         </div>
         <div class="gallery-divider"></div>
 
-        <!-- LOT 001 -->
+        <!-- LOT 001 — Sonder -->
         <div class="artwork-panel" id="panel-0">
           <div class="artwork-inner">
             <div class="frame-wrap">
-              <div class="frame"><div class="artwork-canvas"></div></div>
+              <div class="frame">
+                <img class="artwork-canvas" src="Sonder.png" alt="Sonder by Michelle Tatiana Gronich" />
+              </div>
               <div class="lot-tag">Lot 001</div>
             </div>
             <div class="artwork-info">
               <div class="artwork-meta">
-                <div class="artwork-artist">Artist Name</div>
-                <div class="artwork-title"><em>Artwork Title</em></div>
-                <div class="artwork-year">Year · Medium · Dimensions</div>
+                <div class="artwork-artist">Michelle Tatiana Gronich</div>
+                <div class="artwork-title"><em>Sonder</em></div>
+                <div class="artwork-year">2026 · Mixed media: Acrylic, Posca Pens &amp; Oil Pastels · 41 × 50 cm</div>
               </div>
-              <div class="artwork-desc">Artwork description. Describe the work, the artist's practice, and what makes this piece significant.</div>
+              <div class="artwork-desc">In this piece, are fragmented identities layered with faces and symbolism, each one carrying its own weight and life story. The deep blues and tones echo the stillness of night, a time when the city quiets down but never really sleeps. As a teenager I faced many struggles too big for a young person like myself to handle, so I turned to drawing cities and peoples faces, repeating expressions and abstracted crowded forms. It was a way of coping to process what I couldn't explain and a way to heal my inner thoughts of the outside world. This piece is not just about observation but about the understanding of others and the ability to create connection through understanding each other's hardships.</div>
+              <div class="proceeds-note">100% of proceeds go directly to the artist</div>
               <div class="info-divider"></div>
-              <div class="auction-block" data-lot="0" data-end="2026-05-10T20:00:00" data-reserve="4000" data-start-min="3400">
+              <div class="auction-block" data-lot="0" data-end="2026-05-24T20:00:00" data-reserve="9999999" data-start-min="150">
                 <div class="bid-row">
                   <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-0">—</div></div>
                   <div class="countdown-wrap"><div class="bid-label" style="text-align:right;">Closes In</div><div class="countdown" id="countdown-0"></div></div>
                 </div>
-                <button class="bid-open-btn" id="bid-btn-0" onclick="openBidModal(0,'Artwork Title')">Place a Bid</button>
+                <button class="bid-open-btn" id="bid-btn-0" onclick="openBidModal(0,'Sonder')">Place a Bid</button>
                 <div class="bid-status" id="bid-status-0"><span class="bid-loading">Loading bids…</span></div>
                 <div class="bid-history" id="bid-history-0">
                   <div class="bid-history-label">Recent Bids</div>
@@ -664,27 +907,30 @@
         </div>
         <div class="gallery-divider"></div>
 
-        <!-- LOT 002 -->
+        <!-- LOT 002 — Alter Ego -->
         <div class="artwork-panel" id="panel-1">
           <div class="artwork-inner">
             <div class="frame-wrap">
-              <div class="frame"><div class="artwork-canvas"></div></div>
+              <div class="frame">
+                <img class="artwork-canvas" src="AlterEgo.png" alt="Alter Ego by Michelle Tatiana Gronich" />
+              </div>
               <div class="lot-tag">Lot 002</div>
             </div>
             <div class="artwork-info">
               <div class="artwork-meta">
-                <div class="artwork-artist">Artist Name</div>
-                <div class="artwork-title"><em>Artwork Title</em></div>
-                <div class="artwork-year">Year · Medium · Dimensions</div>
+                <div class="artwork-artist">Michelle Tatiana Gronich</div>
+                <div class="artwork-title"><em>Alter Ego</em></div>
+                <div class="artwork-year">2026 · Mixed media: Acrylic, Posca Pens &amp; Oil Pastels · 41 × 50 cm</div>
               </div>
-              <div class="artwork-desc">Artwork description. Describe the work, the artist's practice, and what makes this piece significant.</div>
+              <div class="artwork-desc">"Alter Ego" is an acrylic abstract painting, that explores the hidden versions of ourselves that exists beneath the surface. The black background represents the mind, an empty yet chaotic place to stay in. <br> <br>The yellow symbolism and city like features, reflect the feeling of building a second identity over time. The pink border creates tension between control and instability, confidence and confusion. "Alter Ego" is about the feeling of existing as two versions of yourself at the same time.</div>
+              <div class="proceeds-note">100% of proceeds go directly to the artist</div>
               <div class="info-divider"></div>
-              <div class="auction-block" data-lot="1" data-end="2026-05-11T18:00:00" data-reserve="2500" data-start-min="2000">
+              <div class="auction-block" data-lot="1" data-end="2026-05-24T20:00:00" data-reserve="9999999" data-start-min="150">
                 <div class="bid-row">
                   <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-1">—</div></div>
                   <div class="countdown-wrap"><div class="bid-label" style="text-align:right;">Closes In</div><div class="countdown" id="countdown-1"></div></div>
                 </div>
-                <button class="bid-open-btn" id="bid-btn-1" onclick="openBidModal(1,'Artwork Title')">Place a Bid</button>
+                <button class="bid-open-btn" id="bid-btn-1" onclick="openBidModal(1,'Alter Ego')">Place a Bid</button>
                 <div class="bid-status" id="bid-status-1"><span class="bid-loading">Loading bids…</span></div>
                 <div class="bid-history" id="bid-history-1">
                   <div class="bid-history-label">Recent Bids</div>
@@ -695,27 +941,30 @@
         </div>
         <div class="gallery-divider"></div>
 
-        <!-- LOT 003 -->
+        <!-- LOT 003 — Nocturnal Blush -->
         <div class="artwork-panel" id="panel-2">
           <div class="artwork-inner">
             <div class="frame-wrap">
-              <div class="frame"><div class="artwork-canvas"></div></div>
+              <div class="frame">
+                <img class="artwork-canvas" src="NocturnalBlush.png" alt="Nocturnal Blush by Amber" />
+              </div>
               <div class="lot-tag">Lot 003</div>
             </div>
             <div class="artwork-info">
               <div class="artwork-meta">
-                <div class="artwork-artist">Artist Name</div>
-                <div class="artwork-title"><em>Artwork Title</em></div>
-                <div class="artwork-year">Year · Medium · Dimensions</div>
+                <div class="artwork-artist">Amber</div>
+                <div class="artwork-title"><em>Nocturnal Blush</em></div>
+                <div class="artwork-year">2026 · Acrylic on canvas · 45 × 60 cm</div>
               </div>
-              <div class="artwork-desc">Artwork description. Describe the work, the artist's practice, and what makes this piece significant.</div>
+              <div class="artwork-desc">A continuing series of floral still lifes painted from custom florist arrangements. Exploring impermanence, texture, and organic form through layered colour and painterly detail.</div>
+              <div class="proceeds-note">100% of proceeds go directly to the artist</div>
               <div class="info-divider"></div>
-              <div class="auction-block" data-lot="2" data-end="2026-05-12T21:00:00" data-reserve="5000" data-start-min="5700">
+              <div class="auction-block" data-lot="2" data-end="2026-05-24T20:00:00" data-reserve="9999999" data-start-min="150">
                 <div class="bid-row">
                   <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-2">—</div></div>
                   <div class="countdown-wrap"><div class="bid-label" style="text-align:right;">Closes In</div><div class="countdown" id="countdown-2"></div></div>
                 </div>
-                <button class="bid-open-btn" id="bid-btn-2" onclick="openBidModal(2,'Artwork Title')">Place a Bid</button>
+                <button class="bid-open-btn" id="bid-btn-2" onclick="openBidModal(2,'Nocturnal Blush')">Place a Bid</button>
                 <div class="bid-status" id="bid-status-2"><span class="bid-loading">Loading bids…</span></div>
                 <div class="bid-history" id="bid-history-2">
                   <div class="bid-history-label">Recent Bids</div>
@@ -726,91 +975,32 @@
         </div>
         <div class="gallery-divider"></div>
 
-        <!-- LOT 004 -->
+        <!-- LOT 004 — Girls at the Beach -->
         <div class="artwork-panel" id="panel-3">
           <div class="artwork-inner">
             <div class="frame-wrap">
-              <div class="frame"><div class="artwork-canvas"></div></div>
+              <div class="frame">
+                <img class="artwork-canvas" src="GirlsBeach.png" alt="Girls at the Beach by Jemima" />
+              </div>
               <div class="lot-tag">Lot 004</div>
             </div>
             <div class="artwork-info">
               <div class="artwork-meta">
-                <div class="artwork-artist">Artist Name</div>
-                <div class="artwork-title"><em>Artwork Title</em></div>
-                <div class="artwork-year">Year · Medium · Dimensions</div>
+                <div class="artwork-artist">Jemima</div>
+                <div class="artwork-title"><em>Girls at the Beach</em></div>
+                <div class="artwork-year">2026 · Acrylic on primed wood · 24 × 19 cm</div>
               </div>
-              <div class="artwork-desc">Artwork description. Describe the work, the artist's practice, and what makes this piece significant.</div>
+              <div class="artwork-desc">Much can be said about the fierce yet gentle love women give to each other. It's in the food we cook for each other, the way we touch each other. Even in the way we fight. But there is a particular preciousness about the liminal moments we share dressing and undressing together. The vulnerability of our nudity that is otherwise so sexualised and politicised and shamed and commodified - in these moments, just existing with each other as if our breasts were merely our elbows and our bare thighs were our eyebrows. I wanted to paint this idea with the tenderness and love moments like these have, even when we don't really think about them too deeply.</div>
+              <div class="proceeds-note">100% of proceeds go directly to the artist</div>
               <div class="info-divider"></div>
-              <div class="auction-block" data-lot="3" data-end="2026-05-09T19:00:00" data-reserve="2000" data-start-min="2300">
+              <div class="auction-block" data-lot="3" data-end="2026-05-24T20:00:00" data-reserve="9999999" data-start-min="150">
                 <div class="bid-row">
                   <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-3">—</div></div>
                   <div class="countdown-wrap"><div class="bid-label" style="text-align:right;">Closes In</div><div class="countdown" id="countdown-3"></div></div>
                 </div>
-                <button class="bid-open-btn" id="bid-btn-3" onclick="openBidModal(3,'Artwork Title')">Place a Bid</button>
+                <button class="bid-open-btn" id="bid-btn-3" onclick="openBidModal(3,'Girls at the Beach')">Place a Bid</button>
                 <div class="bid-status" id="bid-status-3"><span class="bid-loading">Loading bids…</span></div>
                 <div class="bid-history" id="bid-history-3">
-                  <div class="bid-history-label">Recent Bids</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="gallery-divider"></div>
-
-        <!-- LOT 005 -->
-        <div class="artwork-panel" id="panel-4">
-          <div class="artwork-inner">
-            <div class="frame-wrap">
-              <div class="frame"><div class="artwork-canvas"></div></div>
-              <div class="lot-tag">Lot 005</div>
-            </div>
-            <div class="artwork-info">
-              <div class="artwork-meta">
-                <div class="artwork-artist">Artist Name</div>
-                <div class="artwork-title"><em>Artwork Title</em></div>
-                <div class="artwork-year">Year · Medium · Dimensions</div>
-              </div>
-              <div class="artwork-desc">Artwork description. Describe the work, the artist's practice, and what makes this piece significant.</div>
-              <div class="info-divider"></div>
-              <div class="auction-block" data-lot="4" data-end="2026-05-13T17:00:00" data-reserve="1500" data-start-min="1100">
-                <div class="bid-row">
-                  <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-4">—</div></div>
-                  <div class="countdown-wrap"><div class="bid-label" style="text-align:right;">Closes In</div><div class="countdown" id="countdown-4"></div></div>
-                </div>
-                <button class="bid-open-btn" id="bid-btn-4" onclick="openBidModal(4,'Artwork Title')">Place a Bid</button>
-                <div class="bid-status" id="bid-status-4"><span class="bid-loading">Loading bids…</span></div>
-                <div class="bid-history" id="bid-history-4">
-                  <div class="bid-history-label">Recent Bids</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="gallery-divider"></div>
-
-        <!-- LOT 006 -->
-        <div class="artwork-panel" id="panel-5">
-          <div class="artwork-inner">
-            <div class="frame-wrap">
-              <div class="frame"><div class="artwork-canvas"></div></div>
-              <div class="lot-tag">Lot 006</div>
-            </div>
-            <div class="artwork-info">
-              <div class="artwork-meta">
-                <div class="artwork-artist">Artist Name</div>
-                <div class="artwork-title"><em>Artwork Title</em></div>
-                <div class="artwork-year">Year · Medium · Dimensions</div>
-              </div>
-              <div class="artwork-desc">Artwork description. Describe the work, the artist's practice, and what makes this piece significant.</div>
-              <div class="info-divider"></div>
-              <div class="auction-block" data-lot="5" data-end="2026-05-14T20:00:00" data-reserve="3500" data-start-min="4300">
-                <div class="bid-row">
-                  <div><div class="bid-label">Current Bid</div><div class="bid-amount" id="bid-current-5">—</div></div>
-                  <div class="countdown-wrap"><div class="bid-label" style="text-align:right;">Closes In</div><div class="countdown" id="countdown-5"></div></div>
-                </div>
-                <button class="bid-open-btn" id="bid-btn-5" onclick="openBidModal(5,'Artwork Title')">Place a Bid</button>
-                <div class="bid-status" id="bid-status-5"><span class="bid-loading">Loading bids…</span></div>
-                <div class="bid-history" id="bid-history-5">
                   <div class="bid-history-label">Recent Bids</div>
                 </div>
               </div>
@@ -839,7 +1029,7 @@
     <div class="artwork-index">
       <div class="index-num">LOT</div>
       <div class="current-index" id="currentIndex">—</div>
-      <div class="index-num">/ 6</div>
+      <div class="index-num">/ 4</div>
     </div>
 
     <!-- BID MODAL -->
@@ -861,7 +1051,7 @@
           <div class="modal-label">Bid Amount</div>
           <div class="modal-input-wrap">
             <span class="modal-currency">$</span>
-            <input class="modal-input with-prefix" type="number" id="modalBidAmount" placeholder="0" step="100" />
+            <input class="modal-input with-prefix" type="number" id="modalBidAmount" placeholder="0" step="10" />
           </div>
           <div class="modal-hint" id="modalMinNote"></div>
         </div>
@@ -869,7 +1059,24 @@
         <div class="modal-note">By confirming you commit to this bid. The highest bidder at close will be contacted to arrange payment and collection.</div>
         <div class="modal-actions">
           <button class="modal-btn" id="modalCancelBtn" onclick="closeBidModal()">Cancel</button>
-          <button class="modal-btn confirm" id="modalConfirmBtn" onclick="confirmBid()">Confirm Bid</button>
+          <button class="modal-btn confirm" id="modalConfirmBtn" onclick="showTCs()">Confirm Bid</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- T&Cs MODAL -->
+    <div class="tcs-overlay" id="tcsModal">
+      <div class="tcs-modal">
+        <div class="tcs-title">Bid Confirmation</div>
+        <div class="tcs-body">
+          <p>By proceeding, you are entering into a binding commitment to purchase this artwork at your stated bid price, should you be the highest bidder when the auction closes at <strong>8:00 PM, Sunday 24 May 2026</strong>.</p>
+          <p>The highest bidder will be contacted via the phone number provided to arrange full payment and collection. Payment is due within 48 hours of being notified.</p>
+          <p>Bids are final and cannot be withdrawn once placed. Convoy reserves the right to disqualify bids made in bad faith.</p>
+          <p>100% of the hammer price goes directly to the artist. No buyer's premium applies.</p>
+        </div>
+        <div class="tcs-actions">
+          <button class="tcs-btn" onclick="closeTCs()">Go Back</button>
+          <button class="tcs-btn confirm" onclick="confirmBid()">I Agree — Place Bid</button>
         </div>
       </div>
     </div>
@@ -890,10 +1097,12 @@
     </footer>
 
     <script>
-      // Global stubs — inline onclick= attributes call these; they delegate to the real functions below
+      // Global stubs
       function navigate(dir)            { _navigate(dir); }
       function openBidModal(lot, title) { _openBidModal(lot, title); }
       function closeBidModal()          { _closeBidModal(); }
+      function showTCs()                { _showTCs(); }
+      function closeTCs()               { _closeTCs(); }
       function confirmBid()             { _confirmBid(); }
 
       // ===== SUPABASE SETUP =====
@@ -902,29 +1111,23 @@
       const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       // ===== CONFIG =====
-      const TOTAL_PANELS = 7;
-      const ARTWORK_COUNT = 6;
+      const TOTAL_PANELS = 5; // entrance + 4 lots
+      const ARTWORK_COUNT = 4;
 
-      // Per-lot config (reserve price, starting minimum if no bids yet)
       const lotConfig = [
-        { reserve: 4000, startMin: 3400 },
-        { reserve: 2500, startMin: 2000 },
-        { reserve: 5000, startMin: 5700 },
-        { reserve: 2000, startMin: 2300 },
-        { reserve: 1500, startMin: 1100 },
-        { reserve: 3500, startMin: 4300 },
+        { reserve: 9999999, startMin: 150 },
+        { reserve: 9999999, startMin: 150 },
+        { reserve: 9999999, startMin: 150 },
+        { reserve: 9999999, startMin: 150 },
       ];
 
       const endTimes = [
-        '2026-05-10T20:00:00',
-        '2026-05-11T18:00:00',
-        '2026-05-12T21:00:00',
-        '2026-05-09T19:00:00',
-        '2026-05-13T17:00:00',
-        '2026-05-14T20:00:00',
+        '2026-05-24T20:00:00',
+        '2026-05-24T20:00:00',
+        '2026-05-24T20:00:00',
+        '2026-05-24T20:00:00',
       ];
 
-      // Local cache of current highest bid per lot
       const lotState = lotConfig.map(c => ({ current: null, min: c.startMin, reserve: c.reserve }));
 
       // ===== GALLERY NAV =====
@@ -941,7 +1144,8 @@
       }
 
       function getPanelOffset(idx) {
-        return idx === 0 ? 0 : 100 + (idx - 1) * 108;
+        const dividerVw = window.innerWidth <= 768 ? 0 : 8;
+        return idx === 0 ? 0 : (100 + dividerVw) + (idx - 1) * (100 + dividerVw);
       }
 
       function goTo(idx) {
@@ -960,15 +1164,18 @@
 
       function updateActivePanel(idx) {
         const entranceInner = document.querySelector('#entrancePanel .artwork-inner');
+        const navEl = document.querySelector('nav');
         for (let i = 0; i < ARTWORK_COUNT; i++) document.getElementById(`panel-${i}`).classList.remove('active','prev');
         if (idx === 0) {
           entranceInner.style.opacity = '1';
           entranceInner.style.transform = 'none';
+          navEl.classList.remove('nav-hidden');
         } else {
           entranceInner.style.opacity = '0';
           const ai = idx - 1;
           document.getElementById(`panel-${ai}`).classList.add('active');
           if (ai > 0) document.getElementById(`panel-${ai-1}`).classList.add('prev');
+          if (window.innerWidth <= 768) navEl.classList.add('nav-hidden');
         }
         document.querySelectorAll('.gallery-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
         document.getElementById('currentIndex').textContent = idx === 0 ? '—' : String(idx).padStart(2,'0');
@@ -981,6 +1188,7 @@
 
       document.addEventListener('keydown', e => {
         if (document.getElementById('bidModal').classList.contains('visible')) return;
+        if (document.getElementById('tcsModal').classList.contains('visible')) return;
         if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
         if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
       });
@@ -1042,7 +1250,6 @@
         const statusEl  = document.getElementById(`bid-status-${lot}`);
         const histEl    = document.getElementById(`bid-history-${lot}`);
 
-        // Clear old entries
         histEl.querySelectorAll('.bid-entry').forEach(e => e.remove());
 
         if (bids.length === 0) {
@@ -1056,19 +1263,13 @@
           const top = bids[0];
           currentEl.textContent = `$${Number(top.amount).toLocaleString()}`;
           lotState[lot].current = Number(top.amount);
-          lotState[lot].min = Number(top.amount) + 200;
+          lotState[lot].min = Number(top.amount) + 10;
 
-          if (Number(top.amount) >= config.reserve) {
-            currentEl.classList.add('reserve-met');
-            statusEl.textContent = 'Reserve met';
-            statusEl.className = 'bid-status reserve-met';
-          } else {
-            currentEl.classList.remove('reserve-met');
-            statusEl.textContent = '';
-            statusEl.className = 'bid-status';
-          }
+          currentEl.classList.remove('reserve-met');
+          statusEl.textContent = '';
+          statusEl.className = 'bid-status';
 
-          bids.slice(0, 4).forEach((bid, i) => {
+          bids.slice(0, 4).forEach((bid) => {
             const e = document.createElement('div');
             e.className = 'bid-entry';
             e.innerHTML = `<span class="bid-entry-bidder">${maskName(bid.bidder_name)}</span><span>$${Number(bid.amount).toLocaleString()}</span>`;
@@ -1082,7 +1283,7 @@
         const first = histEl.querySelector('.bid-entry');
         if (first) {
           first.classList.remove('new-bid');
-          void first.offsetWidth; // reflow
+          void first.offsetWidth;
           first.classList.add('new-bid');
         }
       }
@@ -1102,7 +1303,6 @@
           return;
         }
 
-        // Group by lot
         for (let i = 0; i < ARTWORK_COUNT; i++) {
           const lotBids = data.filter(b => b.lot === i);
           renderLotFromBids(i, lotBids);
@@ -1115,7 +1315,6 @@
           .channel('bids-channel')
           .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'bids' }, async payload => {
             const lot = payload.new.lot;
-            // Reload that lot's bids fresh from DB to get correct ordering
             const { data } = await db
               .from('bids')
               .select('lot, bidder_name, amount, created_at')
@@ -1145,7 +1344,6 @@
       let pendingBid = { lot: null, title: null };
 
       function _openBidModal(lot, title) {
-        // Check if closed
         if (new Date(endTimes[lot]) <= Date.now()) {
           showToast('Bidding has closed for this lot.', true);
           return;
@@ -1169,7 +1367,8 @@
         pendingBid = { lot: null, title: null };
       }
 
-      async function _confirmBid() {
+      // ===== T&Cs =====
+      function _showTCs() {
         const { lot } = pendingBid;
         if (lot === null) return;
 
@@ -1179,21 +1378,35 @@
         const min    = lotState[lot].min;
         const errEl  = document.getElementById('modalError');
 
-        if (!name)                  { errEl.textContent = 'Please enter your name.'; return; }
-        if (!phone)                 { errEl.textContent = 'Please enter a contact number.'; return; }
+        if (!name)                   { errEl.textContent = 'Please enter your name.'; return; }
+        if (!phone)                  { errEl.textContent = 'Please enter a contact number.'; return; }
         if (!amount || amount < min) { errEl.textContent = `Bid must be at least $${min.toLocaleString()}.`; return; }
+        if (new Date(endTimes[lot]) <= Date.now()) { errEl.textContent = 'Sorry, bidding has closed for this lot.'; return; }
 
-        // Check auction hasn't closed
+        errEl.textContent = '';
+        document.getElementById('tcsModal').classList.add('visible');
+      }
+
+      function _closeTCs() {
+        document.getElementById('tcsModal').classList.remove('visible');
+      }
+
+      async function _confirmBid() {
+        const { lot } = pendingBid;
+        if (lot === null) return;
+
+        const name   = document.getElementById('modalName').value.trim();
+        const phone  = document.getElementById('modalPhone').value.trim();
+        const amount = parseFloat(document.getElementById('modalBidAmount').value);
+
         if (new Date(endTimes[lot]) <= Date.now()) {
-          errEl.textContent = 'Sorry, bidding has closed for this lot.';
+          _closeTCs();
+          document.getElementById('modalError').textContent = 'Sorry, bidding has closed for this lot.';
           return;
         }
 
-        errEl.textContent = '';
-
-        // Disable buttons while submitting
-        const confirmBtn = document.getElementById('modalConfirmBtn');
-        const cancelBtn  = document.getElementById('modalCancelBtn');
+        const confirmBtn = document.querySelector('.tcs-btn.confirm');
+        const cancelBtn  = document.querySelector('.tcs-btn:not(.confirm)');
         confirmBtn.disabled = true;
         confirmBtn.textContent = 'Placing…';
         cancelBtn.disabled = true;
@@ -1206,26 +1419,31 @@
         });
 
         confirmBtn.disabled = false;
-        confirmBtn.textContent = 'Confirm Bid';
+        confirmBtn.textContent = 'I Agree — Place Bid';
         cancelBtn.disabled = false;
 
         if (error) {
-          // The DB trigger fires if bid is too low — surface that clearly
+          _closeTCs();
           if (error.message && error.message.includes('higher than current highest')) {
-            errEl.textContent = 'Someone just outbid you! Please refresh and try again.';
+            document.getElementById('modalError').textContent = 'Someone just outbid you! Please refresh and try again.';
           } else {
-            errEl.textContent = 'Something went wrong. Please try again.';
+            document.getElementById('modalError').textContent = 'Something went wrong. Please try again.';
           }
           console.error(error);
           return;
         }
 
+        _closeTCs();
         _closeBidModal();
         showToast('Bid placed successfully!');
       }
 
       document.getElementById('bidModal').addEventListener('click', function(e) {
         if (e.target === this) _closeBidModal();
+      });
+
+      document.getElementById('tcsModal').addEventListener('click', function(e) {
+        if (e.target === this) _closeTCs();
       });
 
       // ===== INIT =====
