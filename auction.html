@@ -246,6 +246,26 @@
         flex-shrink: 0;
       }
 
+      /* Frame disclaimer */
+      .frame-disclaimer {
+        font-size: 0.62rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(0,0,0,0.22);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: -0.5rem;
+      }
+      .frame-disclaimer::before {
+        content: '';
+        display: inline-block;
+        width: 16px;
+        height: 1px;
+        background: rgba(0,0,0,0.12);
+        flex-shrink: 0;
+      }
+
       /* ===== AUCTION BLOCK ===== */
       .auction-block { display: flex; flex-direction: column; gap: 0.9rem; }
 
@@ -713,9 +733,28 @@
           height: 100vh;
           width: 100%;
           max-width: 100%;
-          /* top: enough room for nav (gone on artwork but safe); bottom: room for nav bar */
           padding: 3.5rem 1.5rem 6rem;
           -webkit-overflow-scrolling: touch;
+        }
+
+        /* Entrance panel: override to properly center on mobile */
+        .entrance-panel {
+          align-items: center;
+          justify-content: center;
+        }
+
+        /* The entrance inner is set inline — override scroll behaviour so it stays centered */
+        #entrancePanel .artwork-inner {
+          overflow: hidden !important;
+          height: 100vh !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          justify-content: center !important;
+          padding: 2rem 1.5rem !important;
+          transform: none !important;
+          opacity: 1 !important;
+          gap: 0.9rem !important;
         }
 
         /* Frame section */
@@ -882,6 +921,7 @@
               </div>
               <div class="artwork-desc">In this piece, are fragmented identities layered with faces and symbolism, each one carrying its own weight and life story. The deep blues and tones echo the stillness of night, a time when the city quiets down but never really sleeps. As a teenager I faced many struggles too big for a young person like myself to handle, so I turned to drawing cities and peoples faces, repeating expressions and abstracted crowded forms. It was a way of coping to process what I couldn't explain and a way to heal my inner thoughts of the outside world. This piece is not just about observation but about the understanding of others and the ability to create connection through understanding each other's hardships.</div>
               <div class="proceeds-note">100% of proceeds go directly to the artist</div>
+              <div class="frame-disclaimer">Artwork sold unframed</div>
               <div class="info-divider"></div>
               <div class="auction-block" data-lot="0" data-end="2026-05-24T20:00:00" data-reserve="9999999" data-start-min="150">
                 <div class="bid-row">
@@ -916,6 +956,7 @@
               </div>
               <div class="artwork-desc">"Alter Ego" is an acrylic abstract painting, that explores the hidden versions of ourselves that exists beneath the surface. The black background represents the mind, an empty yet chaotic place to stay in. <br> <br>The yellow symbolism and city like features, reflect the feeling of building a second identity over time. The pink border creates tension between control and instability, confidence and confusion. "Alter Ego" is about the feeling of existing as two versions of yourself at the same time.</div>
               <div class="proceeds-note">100% of proceeds go directly to the artist</div>
+              <div class="frame-disclaimer">Artwork sold unframed</div>
               <div class="info-divider"></div>
               <div class="auction-block" data-lot="1" data-end="2026-05-24T20:00:00" data-reserve="9999999" data-start-min="150">
                 <div class="bid-row">
@@ -950,6 +991,7 @@
               </div>
              <div class="artwork-desc">A continuing series of floral still lifes painted from custom florist arrangements made by <a href="https://www.flowersbelladonna.com.au/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;text-decoration-color:rgba(0,0,0,0.25);text-underline-offset:2px;">Flowers Belladonna</a>. Exploring impermanence, texture, and organic form through layered colour and painterly detail.</div>
               <div class="proceeds-note">100% of proceeds go directly to the artist</div>
+              <div class="frame-disclaimer">Artwork sold unframed</div>
               <div class="info-divider"></div>
               <div class="auction-block" data-lot="2" data-end="2026-05-24T20:00:00" data-reserve="9999999" data-start-min="150">
                 <div class="bid-row">
@@ -984,6 +1026,7 @@
               </div>
               <div class="artwork-desc">Much can be said about the fierce yet gentle love women give to each other. It's in the food we cook for each other, the way we touch each other. Even in the way we fight. But there is a particular preciousness about the liminal moments we share dressing and undressing together. The vulnerability of our nudity that is otherwise so sexualised and politicised and shamed and commodified - in these moments, just existing with each other as if our breasts were merely our elbows and our bare thighs were our eyebrows. I wanted to paint this idea with the tenderness and love moments like these have, even when we don't really think about them too deeply.</div>
               <div class="proceeds-note">100% of proceeds go directly to the artist</div>
+              <div class="frame-disclaimer">Artwork sold unframed</div>
               <div class="info-divider"></div>
               <div class="auction-block" data-lot="3" data-end="2026-05-24T20:00:00" data-reserve="9999999" data-start-min="150">
                 <div class="bid-row">
@@ -1065,6 +1108,7 @@
           <p>The highest bidder will be contacted via the phone number provided to arrange full payment and collection. Payment is due within 48 hours of being notified.</p>
           <p>Bids are final and cannot be withdrawn once placed. Convoy reserves the right to disqualify bids made in bad faith.</p>
           <p>100% of the hammer price goes directly to the artist. No buyer's premium applies.</p>
+          <p>All artworks are sold unframed.</p>
         </div>
         <div class="tcs-actions">
           <button class="tcs-btn" onclick="closeTCs()">Go Back</button>
