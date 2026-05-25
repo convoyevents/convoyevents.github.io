@@ -39,7 +39,9 @@
         justify-content: space-between;
         align-items: center;
         padding: 1rem 2rem;
-        background: transparent;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid #ddd;
         z-index: 100;
       }
 
@@ -51,16 +53,16 @@
         transition: opacity 0.3s;
         color: var(--fg);
       }
-      .logo:hover { opacity: 0.5; }
+      .logo:hover { opacity: 0.6; }
 
       .nav-links a {
         margin-left: 1.5rem;
         font-size: 0.9rem;
-        color: rgba(0,0,0,0.5);
+        color: #666;
         transition: color 0.3s;
       }
       .nav-links a:hover { color: var(--fg); }
-      .nav-links a.active { color: var(--fg); border-bottom: 1px solid rgba(0,0,0,0.3); }
+      .nav-links a.active { color: var(--fg); }
 
       /* ===== GALLERY CONTAINER ===== */
       .gallery-wrapper {
@@ -701,9 +703,9 @@
           transition: opacity 0.4s, transform 0.4s;
         }
         nav.nav-hidden {
-          opacity: 0;
-          pointer-events: none;
-          transform: translateY(-100%);
+          opacity: 1;
+          pointer-events: all;
+          transform: translateY(0);
         }
         .logo { font-size: 0.95rem; }
         .nav-links a { margin-left: 1rem; font-size: 0.8rem; }
@@ -881,7 +883,7 @@
       <div class="nav-links">
         <a href="events">Events</a>
         <a href="auction" class="active">Auction</a>
-        <a href="join">Community</a>
+        <a href="join">Join</a>
       </div>
     </nav>
 
@@ -1211,7 +1213,7 @@
           const ai = idx - 1;
           document.getElementById(`panel-${ai}`).classList.add('active');
           if (ai > 0) document.getElementById(`panel-${ai-1}`).classList.add('prev');
-          if (window.innerWidth <= 768) navEl.classList.add('nav-hidden');
+          navEl.classList.remove('nav-hidden');
         }
         document.querySelectorAll('.gallery-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
         document.getElementById('currentIndex').textContent = idx === 0 ? '—' : String(idx).padStart(2,'0');
