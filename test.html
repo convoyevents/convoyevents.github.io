@@ -369,6 +369,56 @@
         .toast { bottom: 4.5rem; }
       }
 
+      /* IMAGE PREVIEW OVERLAY */
+      .preview-overlay {
+        position: fixed; inset: 0; z-index: 600;
+        background: rgba(0,0,0,0.92);
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.25s;
+      }
+      .preview-overlay.visible { opacity: 1; pointer-events: all; }
+
+      .preview-close {
+        position: fixed; top: 1.2rem; right: 1.2rem;
+        width: 2.4rem; height: 2.4rem;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 50%;
+        color: #fff; font-size: 1.1rem; line-height: 1;
+        cursor: pointer; display: flex; align-items: center; justify-content: center;
+        transition: background 0.2s;
+        z-index: 601;
+        font-family: 'Courier Prime', monospace;
+      }
+      .preview-close:hover { background: rgba(255,255,255,0.2); }
+
+      .preview-scroll {
+        overflow: auto;
+        width: 100%; height: 100%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: zoom-in;
+      }
+      .preview-scroll.zoomed { cursor: zoom-out; align-items: flex-start; justify-content: flex-start; }
+
+      .preview-img {
+        display: block;
+        max-width: 90vw;
+        max-height: 90vh;
+        width: auto; height: auto;
+        object-fit: contain;
+        transition: transform 0.2s ease;
+        transform-origin: top left;
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+      .preview-scroll.zoomed .preview-img {
+        max-width: none;
+        max-height: none;
+      }
+
+      .artwork-canvas { cursor: pointer; }
+
       @media (max-width: 390px) {
         .artwork-inner { padding: 4rem 1.1rem 5.5rem; }
         .artwork-title { font-size: 1.35rem; }
@@ -593,6 +643,14 @@
           <button class="tcs-btn" onclick="closeTCs()">Go Back</button>
           <button class="tcs-btn confirm" onclick="confirmBid()">I Agree — Place Bid</button>
         </div>
+      </div>
+    </div>
+
+    <!-- IMAGE PREVIEW -->
+    <div class="preview-overlay" id="previewOverlay">
+      <button class="preview-close" id="previewClose" aria-label="Close preview">✕</button>
+      <div class="preview-scroll" id="previewScroll">
+        <img class="preview-img" id="previewImg" src="" alt="" />
       </div>
     </div>
 
@@ -864,6 +922,68 @@
 
       document.getElementById('bidModal').addEventListener('click', e => { if (e.target === e.currentTarget) _closeBidModal(); });
       document.getElementById('tcsModal').addEventListener('click', e => { if (e.target === e.currentTarget) _closeTCs(); });
+
+      // ── IMAGE PREVIEW ──
+      const previewOverlay = document.getElementById('previewOverlay');
+      const previewScroll  = document.getElementById('previewScroll');
+      const previewImg     = document.getElementById('previewImg');
+      const previewClose   = document.getElementById('previewClose');
+
+      let zoomed = false;
+      const ZOOM_SCALE = 2.5;
+
+      function openPreview(src, alt) {
+        previewImg.src = src;
+        previewImg.alt = alt;
+        previewImg.style.transform = 'scale(1)';
+        previewScroll.classList.remove('zoomed');
+        zoomed = false;
+        previewOverlay.classList.add('visible');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closePreview() {
+        previewOverlay.classList.remove('visible');
+        document.body.style.overflow = '';
+        zoomed = false;
+      }
+
+      // Click image to zoom/unzoom
+      previewScroll.addEventListener('click', e => {
+        if (e.target === previewClose) return;
+        if (!zoomed) {
+          // Zoom into click point
+          const rect = previewImg.getBoundingClientRect();
+          const ox = (e.clientX - rect.left) / rect.width;
+          const oy = (e.clientY - rect.top)  / rect.height;
+          previewImg.style.transformOrigin = `${ox * 100}% ${oy * 100}%`;
+          previewImg.style.transform = `scale(${ZOOM_SCALE})`;
+          previewScroll.classList.add('zoomed');
+          zoomed = true;
+        } else {
+          previewImg.style.transform = 'scale(1)';
+          previewImg.style.transformOrigin = 'top left';
+          previewScroll.classList.remove('zoomed');
+          zoomed = false;
+        }
+      });
+
+      previewClose.addEventListener('click', e => { e.stopPropagation(); closePreview(); });
+
+      // Close on backdrop (not on image)
+      previewOverlay.addEventListener('click', e => {
+        if (e.target === previewOverlay) closePreview();
+      });
+
+      // Escape key
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && previewOverlay.classList.contains('visible')) closePreview();
+      });
+
+      // Wire up all artwork images
+      document.querySelectorAll('.artwork-canvas').forEach(img => {
+        img.addEventListener('click', () => openPreview(img.src, img.alt));
+      });
 
       // ── INIT ──
       updateControls();
