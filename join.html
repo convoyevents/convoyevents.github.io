@@ -5,44 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Convoy — Apply</title>
     <link rel="icon" type="image/png" href="favicon.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Patua+One&display=swap" rel="stylesheet" />
 
     <style>
       :root {
         --bg: #fff;
         --fg: #000;
-        --muted: rgba(0,0,0,0.38);
+        --muted: rgba(0,0,0,0.42);
         --soft: #f4f4f4;
+        --heading-font: 'Patua One', 'Cooper Black', serif;
+        --body-font: 'Courier Prime', monospace;
       }
 
-      * { box-sizing: border-box; margin: 0; padding: 0; }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
       body {
-        font-family: "Courier Prime", monospace;
+        font-family: var(--body-font);
         background: var(--bg);
         color: var(--fg);
         overflow-x: hidden;
-        line-height: 1.5;
+        line-height: 1.55;
       }
 
       a { color: inherit; text-decoration: none; }
 
       /* NAV */
       nav {
-        position: fixed;
-        top: 0; width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        position: fixed; top: 0; width: 100%;
+        display: flex; justify-content: space-between; align-items: center;
         padding: 1rem 2rem;
-        background: rgba(255,255,255,0.85);
+        background: rgba(255,255,255,0.82);
         backdrop-filter: blur(12px);
         border-bottom: 1px solid rgba(0,0,0,0.08);
         z-index: 100;
       }
-      .logo { font-weight: 700; letter-spacing: 0.12em; font-size: 1rem; cursor: pointer; transition: opacity 0.3s; }
+      .logo {
+        font-family: var(--body-font);
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: opacity 0.3s;
+      }
       .logo:hover { opacity: 0.5; }
-      .nav-links a { margin-left: 1.5rem; font-size: 0.78rem; color: rgba(0,0,0,0.45); letter-spacing: 0.08em; transition: color 0.3s; }
+      .nav-links a {
+        margin-left: 1.5rem;
+        font-size: 0.78rem;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+        transition: color 0.3s;
+      }
       .nav-links a:hover { color: var(--fg); }
 
       /* HERO */
@@ -50,9 +62,9 @@
         min-height: 36vh;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
-        padding: 120px 2rem 2rem;
+        padding: 110px 2rem 3rem;
         text-align: center;
         position: relative;
         overflow: hidden;
@@ -67,34 +79,38 @@
       @keyframes grainMove { 0%{transform:translate(0,0)} 100%{transform:translate(-50px,50px)} }
 
       .page-title {
-        font-family: "Courier Prime", monospace;
-        font-size: clamp(1.4rem, 4vw, 2.4rem);
-        font-weight: 700;
-        letter-spacing: 0.18em;
-        margin-bottom: 0.75rem;
+        font-family: var(--heading-font);
+        font-size: clamp(1.8rem, 5vw, 3.4rem);
+        font-weight: 400; /* Patua One is inherently heavy */
+        letter-spacing: 0.06em;
+        line-height: 1.1;
+        margin-bottom: 0.9rem;
         position: relative; z-index: 1;
       }
 
       .page-sub {
         max-width: 480px;
         color: var(--muted);
-        font-size: 0.85rem;
+        font-size: 0.82rem;
         letter-spacing: 0.04em;
+        line-height: 1.75;
         position: relative; z-index: 1;
       }
 
-      /* FORM */
+      /* FORM SECTION */
       .form-section {
-        max-width: 600px;
-        margin: 2rem auto 6rem;
+        max-width: 580px;
+        margin: 2.5rem auto 6rem;
         padding: 2.8rem;
         border: 1px solid rgba(0,0,0,0.1);
         border-radius: 4px;
         background: var(--soft);
+        position: relative;
+        overflow: hidden;
       }
 
       .required-note {
-        font-size: 0.65rem;
+        font-size: 0.68rem;
         color: var(--muted);
         letter-spacing: 0.1em;
         margin-bottom: 2rem;
@@ -108,10 +124,11 @@
       }
 
       .form-group label {
-        font-size: 0.62rem;
-        letter-spacing: 0.22em;
+        font-family: var(--body-font);
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
         color: var(--muted);
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.55rem;
         text-transform: uppercase;
       }
 
@@ -125,40 +142,41 @@
         border-radius: 2px;
         outline: none;
         font-size: 0.85rem;
-        font-family: "Courier Prime", monospace;
+        font-family: var(--body-font);
         color: var(--fg);
         transition: border-color 0.2s, box-shadow 0.2s;
         resize: none;
+        width: 100%;
       }
 
       .form-group input:focus,
       .form-group textarea:focus {
-        border-color: var(--fg);
+        border-color: #000;
         box-shadow: 0 0 0 2px rgba(0,0,0,0.06);
       }
 
       .form-group input::placeholder,
-      .form-group textarea::placeholder { color: rgba(0,0,0,0.2); }
+      .form-group textarea::placeholder { color: rgba(0,0,0,0.22); }
 
-      .form-group textarea { min-height: 96px; line-height: 1.7; }
+      .form-group textarea { min-height: 95px; line-height: 1.65; }
 
-      .divider { border: none; border-top: 1px solid rgba(0,0,0,0.1); margin: 1.8rem 0; }
+      .divider { border: none; border-top: 1px solid rgba(0,0,0,0.1); margin: 2rem 0; }
 
       .submit-btn {
         width: 100%;
         border: 1px solid var(--fg);
         background: var(--fg);
         color: var(--bg);
-        padding: 0.85rem;
+        padding: 0.88rem;
         border-radius: 2px;
-        font-size: 0.65rem;
-        font-family: "Courier Prime", monospace;
+        font-size: 0.68rem;
+        font-family: var(--body-font);
         font-weight: 700;
         letter-spacing: 0.22em;
         text-transform: uppercase;
         cursor: pointer;
         transition: opacity 0.2s, transform 0.15s;
-        margin-top: 0.4rem;
+        margin-top: 0.5rem;
       }
       .submit-btn:hover { opacity: 0.75; transform: translateY(-1px); }
 
@@ -168,25 +186,44 @@
         text-align: center;
         padding: 2rem 0 1rem;
       }
-      .thankyou .shrug { font-size: 2.2rem; margin-bottom: 1.1rem; }
-      .thankyou h2 {
-        font-family: "Courier Prime", monospace;
-        font-size: 1rem; font-weight: 700;
-        letter-spacing: 0.14em; margin-bottom: 0.65rem; text-transform: uppercase;
+      .thankyou .shrug {
+        font-size: 2.2rem;
+        margin-bottom: 1.2rem;
+        letter-spacing: 0.05em;
       }
-      .thankyou p { color: var(--muted); font-size: 0.82rem; max-width: 360px; margin: 0 auto; line-height: 1.75; }
+      .thankyou h2 {
+        font-family: var(--heading-font);
+        font-size: 1.5rem;
+        font-weight: 400;
+        letter-spacing: 0.06em;
+        margin-bottom: 0.75rem;
+      }
+      .thankyou p {
+        color: var(--muted);
+        font-size: 0.82rem;
+        max-width: 340px;
+        margin: 0 auto;
+        line-height: 1.8;
+      }
 
       /* FOOTER */
-      footer { padding: 2.5rem 2rem; text-align: center; border-top: 1px solid rgba(0,0,0,0.08); color: var(--muted); font-size: 0.75rem; }
+      footer {
+        padding: 2.5rem 2rem;
+        text-align: center;
+        border-top: 1px solid rgba(0,0,0,0.08);
+        color: var(--muted);
+        font-size: 0.75rem;
+        font-family: var(--body-font);
+      }
       .footer-bottom { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 0.4rem; }
-      .ig-link { display: inline-flex; align-items: center; opacity: 0.4; transition: opacity 0.3s; }
+      .ig-link { display: inline-flex; align-items: center; opacity: 0.45; transition: opacity 0.3s; }
       .ig-link:hover { opacity: 1; }
 
       @media (max-width: 600px) {
         nav { padding: 0.8rem 1.2rem; }
-        .nav-links a { margin-left: 1rem; }
+        .nav-links a { margin-left: 1rem; font-size: 0.75rem; }
         .form-section { margin: 2rem 1.2rem 4rem; padding: 1.8rem 1.4rem; }
-        .page-title { letter-spacing: 0.1em; }
+        .page-title { letter-spacing: 0.03em; }
       }
     </style>
   </head>
@@ -285,15 +322,16 @@
     </footer>
 
     <script>
-      const form = document.getElementById('convoy-form');
+      const form     = document.getElementById('convoy-form');
       const thankyou = document.getElementById('thankyou');
 
-      form.addEventListener('submit', async (e) => {
+      form.addEventListener('submit', async e => {
         e.preventDefault();
         const data = new FormData(form);
         try {
           const res = await fetch(form.action, {
-            method: 'POST', body: data, headers: { 'Accept': 'application/json' }
+            method: 'POST', body: data,
+            headers: { 'Accept': 'application/json' }
           });
           form.style.display = 'none';
           thankyou.style.display = 'block';
