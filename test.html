@@ -715,7 +715,7 @@
         const diff = new Date(endStr) - Date.now();
         if (diff <= 0) {
           el.innerHTML = `<span style="font-size:.7rem;color:var(--muted);letter-spacing:.08em">Closed</span>`;
-          const lot = parseInt(id.split('-')[2]);
+          const lot = parseInt(id.split('-')[1]);
           const btn = document.getElementById(`bid-btn-${lot}`);
           if (btn) { btn.disabled = true; btn.textContent = 'Bidding Closed'; }
           return;
