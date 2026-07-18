@@ -231,7 +231,7 @@ class Component extends DCLogic {
   renderVals() {
     const open = this.state.modalOpen;
     const capacity = this.props.capacity ?? 150;
-    const rsvpCount = Math.min(this.props.rsvpCount ?? 31, capacity);
+    const rsvpCount = Math.min(this.props.rsvpCount ?? 40, capacity);
     const spotsLeft = Math.max(0, capacity - rsvpCount);
     const rsvpPercent = Math.min(100, Math.round((rsvpCount / capacity) * 100)) + '%';
     const spotsLeftLabel = spotsLeft > 0 ? `Only ${spotsLeft} spot${spotsLeft === 1 ? '' : 's'} left` : 'At capacity — email us to join the waitlist';
