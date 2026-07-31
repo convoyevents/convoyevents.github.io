@@ -203,7 +203,7 @@
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
-  &quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 210, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;section&quot;: &quot;RSVP tracker&quot;},
+  &quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 3, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;section&quot;: &quot;RSVP tracker&quot;},
   &quot;capacity&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 300, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 1, &quot;section&quot;: &quot;RSVP tracker&quot;}
 }">
 class Component extends DCLogic {
@@ -213,25 +213,23 @@ class Component extends DCLogic {
   };
 
   metaBlocks = [
-    { label: 'Date', value: 'Thu, Jul 30' },
+    { label: 'Date', value: 'Thu, Aug 30' },
     { label: 'Doors', value: '7pm – 12am' },
-    { label: 'Venue', value: 'Arcade Bar' },
+    { label: 'Venue', value: 'Arcade Bar, Martin Place' },
     { label: 'Entry', value: 'Free', sub: 'RSVP required' },
   ];
 
   lineup = [
-    { role: 'Live music', name: 'SFJ Trio' },
-    { role: 'DJ', name: 'DJ Frizz' },
-    { role: 'Live painter', name: 'Jem Steele' },
-    { role: 'Live painter', name: 'Jinberrie' },
+    { role: 'Live music', name: '?' },
+    { role: 'DJ', name: '?' },
+    { role: 'Live painter', name: 'Michelle Gronich' },
     { role: 'Floristry', name: 'Bella' },
-    { role: 'Sculpturist', name: 'Foley Art' },
   ];
 
   renderVals() {
     const open = this.state.modalOpen;
     const capacity = this.props.capacity ?? 300;
-    const rsvpCount = Math.min(this.props.rsvpCount ?? 210, capacity);
+    const rsvpCount = Math.min(this.props.rsvpCount ?? 3, capacity);
     const spotsLeft = Math.max(0, capacity - rsvpCount);
     const rsvpPercent = Math.min(100, Math.round((rsvpCount / capacity) * 100)) + '%';
     const spotsLeftLabel = spotsLeft > 0 ? `Only ${spotsLeft} spot${spotsLeft === 1 ? '' : 's'} left` : 'At capacity — email us to join the waitlist';
