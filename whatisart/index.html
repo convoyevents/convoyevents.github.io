@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+</head>
+<body>
+<x-dc>
+<template id="__bundler_thumbnail" data-bg-color="#3b1f1c">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#3b1f1c"></rect>
+    <text x="600" y="460" font-family="Georgia, serif" font-weight="700" font-size="220" fill="#f3ead9" text-anchor="middle" letter-spacing="-4">Art?</text>
+  </svg>
+</template>
+<helmet>
+  <title>CONVOY</title>
+  <meta property="og:title" content="CONVOY">
+  <meta property="og:image" content="../assets/convoy-favicon.png">
+  <link rel="icon" type="image/png" href="../assets/convoy-favicon.png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,800;1,400;1,800&amp;family=Noto+Sans+JP:wght@400&amp;family=Outfit:wght@300;400;500&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { margin: 0; padding: 0; background: oklch(0.28 0.09 20); }
+    * { box-sizing: border-box; }
+    a { color: inherit; text-decoration: none; }
+    input::placeholder, textarea::placeholder { color: oklch(0.95 0.02 80 / 0.35); }
+    .lot-stripe { background-image: repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 1px, transparent 9px); }
+    .grain-layer { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMDAnIGhlaWdodD0nMzAwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nMC43OCcgbnVtT2N0YXZlcz0nMicvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSczMDAnIGhlaWdodD0nMzAwJyBmaWx0ZXI9J3VybCgjbiknLz48L3N2Zz4='); }
+    .lineup-grid > div { border-right: 1px solid oklch(0.95 0.02 80 / 0.15); border-bottom: 1px solid oklch(0.95 0.02 80 / 0.15); }
+    .lineup-grid > div:nth-child(3n) { border-right: none; }
+    .lineup-grid > div:last-child:nth-child(3n+1) { grid-column: 1 / -1; text-align: center !important; }
+    @media (max-width: 640px) {
+      .lineup-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .lineup-grid > div:nth-child(3n) { border-right: 1px solid oklch(0.95 0.02 80 / 0.15); }
+      .lineup-grid > div:nth-child(2n) { border-right: none; }
+      .lineup-grid > div:last-child:nth-child(odd) { grid-column: 1 / -1; text-align: center !important; }
+    }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; position: relative; background: oklch(0.28 0.09 20); color: oklch(0.95 0.02 80); font-family: 'Outfit', sans-serif; font-size: 14px; line-height: 1.6;" data-screen-label="What Is Art">
+
+  <!-- velvet vignette -->
+  <div style="position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(120% 90% at 50% 15%, oklch(0.36 0.1 20 / 0.5), transparent 60%), radial-gradient(140% 100% at 50% 100%, oklch(0.14 0.06 20 / 0.85), transparent 55%);"></div>
+
+  <!-- grain -->
+  <div class="grain-layer" style="position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.07; mix-blend-mode: overlay;"></div>
+
+  <!-- NAV -->
+  <nav style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: clamp(16px, 4vw, 24px); gap: 10px; background: linear-gradient(to bottom, oklch(0.28 0.09 20 / 0.85), transparent);">
+    <div style="display: flex; align-items: baseline; gap: 8px; font-family: 'EB Garamond', serif; font-weight: 800; font-size: clamp(12px, 3vw, 15px); letter-spacing: 0.08em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.4); white-space: nowrap;">Convoy <span style="font-family: 'Noto Sans JP', sans-serif; font-weight: 400; letter-spacing: 0;">¯\_(ツ)_/¯</span></div>
+  </nav>
+
+  <!-- HERO PHOTO -->
+  <div style="position: relative; z-index: 1; margin-top: 76px; height: min(66vh, 580px); overflow: hidden;">
+    <img src="../assets/hero-event.jpg" alt="Guests gathered at a candlelit rooftop event after dark" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 78%;">
+    <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, oklch(0.28 0.09 20 / 0) 45%, oklch(0.28 0.09 20) 96%);"></div>
+    <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; text-align: center; padding: 0 24px 40px;">
+      <h1 style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: clamp(56px, 12vw, 160px); line-height: 0.92; text-transform: uppercase; letter-spacing: -0.02em; margin: 0 0 16px;">What <span style="color: oklch(0.95 0.02 80 / 0.35);">Is</span> Art?</h1>
+      <div style="font-family: 'Noto Sans JP', sans-serif; font-size: clamp(20px, 4.5vw, 30px); color: oklch(0.95 0.02 80 / 0.5);">¯\_(ツ)_/¯</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main style="position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 32px clamp(20px, 6vw, 40px) 80px;">
+    <div style="font-size: 11px; font-weight: 300; letter-spacing: 0.18em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 24px;">Convoy presents</div>
+    <div style="font-family: 'EB Garamond', serif; font-style: italic; font-weight: 400; font-size: clamp(18px, 2vw, 24px); margin-bottom: 48px; color: oklch(0.95 0.02 80 / 0.75);">A night of jazz, live painting, and a community with no wrong answers.</div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1px; background: oklch(0.95 0.02 80 / 0.15); border: 1px solid oklch(0.95 0.02 80 / 0.15); margin-bottom: 48px; max-width: 100%;">
+      <sc-for list="{{ metaBlocks }}" as="m" hint-placeholder-count="4">
+        <div style="background: oklch(0.28 0.09 20); padding: 18px 20px; text-align: left;">
+          <div style="font-size: 9px; font-weight: 300; letter-spacing: 0.16em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 5px;">{{ m.label }}</div>
+          <div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 16px; letter-spacing: 0.01em; text-transform: uppercase; line-height: 1.2;">{{ m.value }}</div>
+          <sc-if value="{{ m.sub }}" hint-placeholder-val="{{ false }}">
+            <div style="font-family: 'EB Garamond', serif; font-style: italic; font-size: 13px; font-weight: 400; color: oklch(0.95 0.02 80 / 0.5); margin-top: 2px;">{{ m.sub }}</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="width: 100%; max-width: 320px; margin-bottom: 32px;">
+      <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.55); margin-bottom: 8px;">
+        <span>{{ rsvpCount }} RSVP'd</span>
+        <span>Capacity {{ capacity }}</span>
+      </div>
+      <div style="height: 4px; background: oklch(0.95 0.02 80 / 0.15); border-radius: 2px; overflow: hidden;">
+        <div style="height: 100%; width: {{ rsvpPercent }}; background: oklch(0.95 0.02 80); border-radius: 2px;"></div>
+      </div>
+      <div style="font-family: 'EB Garamond', serif; font-style: italic; font-size: 13px; color: oklch(0.95 0.02 80 / 0.75); margin-top: 10px;">{{ spotsLeftLabel }}</div>
+    </div>
+
+    <button onClick="{{ openModal }}" style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 16px; letter-spacing: 0.1em; text-transform: uppercase; background: oklch(0.95 0.02 80); color: oklch(0.28 0.09 20); border: none; cursor: pointer; padding: 18px 56px; border-radius: 2px; margin-bottom: 20px;">Reserve your spot →</button>
+
+    <div style="font-size: 12px; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 64px;">Part of the Convoy community — <a onClick="{{ openJoinModal }}" style="text-decoration: underline; text-underline-offset: 3px; cursor: pointer;">not yet one of us?</a></div>
+
+    <div style="width: 100%; max-width: 700px; border-top: 1px solid oklch(0.95 0.02 80 / 0.15); padding-top: 40px;">
+      <div style="font-size: 9px; font-weight: 300; letter-spacing: 0.16em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 24px;">Lineup</div>
+      <div class="lineup-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid oklch(0.95 0.02 80 / 0.15);">
+        <sc-for list="{{ lineup }}" as="l" hint-placeholder-count="4">
+          <div style="background: oklch(0.28 0.09 20); padding: 20px 16px; text-align: left;">
+            <div style="font-size: 9px; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 6px;">{{ l.role }}</div>
+            <div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 16px; text-transform: uppercase; line-height: 1.1;">{{ l.name }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="position: relative; z-index: 1; border-top: 1px solid oklch(0.95 0.02 80 / 0.15); padding: 20px clamp(20px, 6vw, 40px); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 11px; font-weight: 300; color: oklch(0.95 0.02 80 / 0.22);">
+    <div>© 2026 <a href="https://www.instagram.com/convoy.au" target="_blank">@convoy.au</a></div>
+    <div style="font-family: 'Noto Sans JP', sans-serif; font-size: 16px; color: oklch(0.95 0.02 80 / 0.5);">¯\_(ツ)_/¯</div>
+  </footer>
+
+  <!-- MODAL -->
+  <div style="position: fixed; inset: 0; z-index: 200; background: oklch(0.22 0.07 20 / 0.9); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: {{ modalOpacity }}; pointer-events: {{ modalPointer }}; transition: opacity 0.25s;" onClick="{{ overlayClick }}">
+    <div style="background: oklch(0.28 0.09 20); border: 1px solid oklch(0.95 0.02 80 / 0.15); width: 100%; max-width: 460px; padding: 40px; position: relative; transform: {{ modalTransform }}; transition: transform 0.25s;" onClick="{{ stopClick }}">
+      <button onClick="{{ closeModal }}" style="position: absolute; top: 18px; right: 20px; background: none; border: none; cursor: pointer; font-size: 10px; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); font-family: 'Outfit', sans-serif;">Close ✕</button>
+
+      <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+        <div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 22px; text-transform: uppercase; margin-bottom: 10px;">Reserve your spot</div>
+        <div style="font-size: 13px; color: oklch(0.95 0.02 80 / 0.6); margin-bottom: 28px;">Free entry — we'll send everything you need before the night.</div>
+        <form action="https://formspree.io/f/mlgqdrvn" method="POST" style="display: flex; flex-direction: column; gap: 16px;" onSubmit="{{ submitForm }}">
+          <input type="hidden" name="_subject" value="New RSVP — What Is Art?">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div>
+              <label style="display: block; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 7px;">First name</label>
+              <input name="first_name" required="" style="width: 100%; padding: 12px 13px; background: transparent; border: 1px solid oklch(0.95 0.02 80 / 0.25); border-radius: 2px; color: inherit; font-family: inherit; font-size: 13px;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 7px;">Last name</label>
+              <input name="last_name" required="" style="width: 100%; padding: 12px 13px; background: transparent; border: 1px solid oklch(0.95 0.02 80 / 0.25); border-radius: 2px; color: inherit; font-family: inherit; font-size: 13px;">
+            </div>
+          </div>
+          <div>
+            <label style="display: block; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 7px;">Email</label>
+            <input type="email" name="email" required="" placeholder="your@email.com" style="width: 100%; padding: 12px 13px; background: transparent; border: 1px solid oklch(0.95 0.02 80 / 0.25); border-radius: 2px; color: inherit; font-family: inherit; font-size: 13px;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 7px;">Phone <span style="opacity: 0.6; text-transform: none; letter-spacing: 0;">(optional)</span></label>
+            <input type="tel" name="phone" placeholder="+61 4xx xxx xxx" style="width: 100%; padding: 12px 13px; background: transparent; border: 1px solid oklch(0.95 0.02 80 / 0.25); border-radius: 2px; color: inherit; font-family: inherit; font-size: 13px;">
+          </div>
+          <label style="display: flex; gap: 9px; align-items: flex-start; font-size: 11px; color: oklch(0.95 0.02 80 / 0.55); line-height: 1.5;">
+            <input type="checkbox" name="opt_out" value="yes" style="margin-top: 2px;">
+            I'd prefer not to receive updates about future Convoy events and community news.
+          </label>
+          <sc-if value="{{ submitError }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size: 12px; color: oklch(0.75 0.15 30);">Something went wrong sending your RSVP — please try again.</div>
+          </sc-if>
+          <button type="submit" disabled="{{ submitting }}" style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; background: oklch(0.95 0.02 80); color: oklch(0.28 0.09 20); border: none; cursor: pointer; padding: 15px; border-radius: 2px; margin-top: 8px; opacity: {{ submitBtnOpacity }};">{{ submitLabel }}</button>
+        </form>
+      </sc-if>
+
+      <sc-if value="{{ showSuccess }}" hint-placeholder-val="{{ false }}">
+        <div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 26px; text-transform: uppercase; margin-bottom: 14px;">You're in.</div>
+        <p style="font-size: 14px; color: oklch(0.95 0.02 80 / 0.65); margin: 0;">Check your inbox — we'll send the details before the night. See you there.</p>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- JOIN CONVOY MODAL -->
+  <div style="position: fixed; inset: 0; z-index: 200; background: oklch(0.22 0.07 20 / 0.9); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: {{ joinModalOpacity }}; pointer-events: {{ joinModalPointer }}; transition: opacity 0.25s;" onClick="{{ joinOverlayClick }}">
+    <div style="background: oklch(0.28 0.09 20); border: 1px solid oklch(0.95 0.02 80 / 0.15); width: 100%; max-width: 460px; padding: 40px; position: relative; transform: {{ joinModalTransform }}; transition: transform 0.25s;" onClick="{{ stopClick }}">
+      <button onClick="{{ closeJoinModal }}" style="position: absolute; top: 18px; right: 20px; background: none; border: none; cursor: pointer; font-size: 10px; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); font-family: 'Outfit', sans-serif;">Close ✕</button>
+
+      <sc-if value="{{ showJoinForm }}" hint-placeholder-val="{{ true }}">
+        <div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 22px; text-transform: uppercase; margin-bottom: 10px;">Join Convoy</div>
+        <div style="font-size: 13px; color: oklch(0.95 0.02 80 / 0.6); margin-bottom: 28px;">Become part of the community — first to know about the next one.</div>
+        <form action="https://formspree.io/f/xjgnkglv" method="POST" style="display: flex; flex-direction: column; gap: 16px;" onSubmit="{{ submitJoinForm }}">
+          <input type="hidden" name="_subject" value="New Convoy sign-up — What Is Art?">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div>
+              <label style="display: block; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 7px;">First name</label>
+              <input name="first_name" required="" style="width: 100%; padding: 12px 13px; background: transparent; border: 1px solid oklch(0.95 0.02 80 / 0.25); border-radius: 2px; color: inherit; font-family: inherit; font-size: 13px;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 7px;">Last name</label>
+              <input name="last_name" required="" style="width: 100%; padding: 12px 13px; background: transparent; border: 1px solid oklch(0.95 0.02 80 / 0.25); border-radius: 2px; color: inherit; font-family: inherit; font-size: 13px;">
+            </div>
+          </div>
+          <div>
+            <label style="display: block; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 7px;">Email</label>
+            <input type="email" name="email" required="" placeholder="your@email.com" style="width: 100%; padding: 12px 13px; background: transparent; border: 1px solid oklch(0.95 0.02 80 / 0.25); border-radius: 2px; color: inherit; font-family: inherit; font-size: 13px;">
+          </div>
+          <sc-if value="{{ joinSubmitError }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size: 12px; color: oklch(0.75 0.15 30);">Something went wrong — please try again.</div>
+          </sc-if>
+          <button type="submit" disabled="{{ joinSubmitting }}" style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; background: oklch(0.95 0.02 80); color: oklch(0.28 0.09 20); border: none; cursor: pointer; padding: 15px; border-radius: 2px; margin-top: 8px; opacity: {{ joinSubmitBtnOpacity }};">{{ joinSubmitLabel }}</button>
+        </form>
+      </sc-if>
+
+      <sc-if value="{{ showJoinSuccess }}" hint-placeholder-val="{{ false }}">
+        <div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 26px; text-transform: uppercase; margin-bottom: 14px;">You're in.</div>
+        <p style="font-size: 14px; color: oklch(0.95 0.02 80 / 0.65); margin: 0;">Welcome to Convoy — keep an eye on your inbox.</p>
+      </sc-if>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 3, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;section&quot;: &quot;RSVP tracker&quot;},
+  &quot;capacity&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 300, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 1, &quot;section&quot;: &quot;RSVP tracker&quot;}
+}">
+class Component extends DCLogic {
+  state = {
+    modalOpen: false, submitted: false, submitting: false, submitError: false,
+    joinModalOpen: false, joinSubmitted: false, joinSubmitting: false, joinSubmitError: false,
+  };
+
+  metaBlocks = [
+    { label: 'Date', value: 'Thu, Aug 30' },
+    { label: 'Doors', value: '7pm – 12am' },
+    { label: 'Venue', value: 'Arcade Bar, Martin Place' },
+    { label: 'Entry', value: 'Free', sub: 'RSVP required' },
+  ];
+
+  lineup = [
+    { role: 'Live music', name: '?' },
+    { role: 'DJ', name: '?' },
+    { role: 'Live painter', name: 'Michelle Gronich' },
+    { role: 'Floristry', name: 'Bella' },
+  ];
+
+  renderVals() {
+    const open = this.state.modalOpen;
+    const capacity = this.props.capacity ?? 300;
+    const rsvpCount = Math.min(this.props.rsvpCount ?? 3, capacity);
+    const spotsLeft = Math.max(0, capacity - rsvpCount);
+    const rsvpPercent = Math.min(100, Math.round((rsvpCount / capacity) * 100)) + '%';
+    const spotsLeftLabel = spotsLeft > 0 ? `Only ${spotsLeft} spot${spotsLeft === 1 ? '' : 's'} left` : 'At capacity — email us to join the waitlist';
+    return {
+      metaBlocks: this.metaBlocks,
+      lineup: this.lineup,
+      capacity, rsvpCount, rsvpPercent, spotsLeftLabel,
+      modalOpacity: open ? 1 : 0,
+      modalPointer: open ? 'all' : 'none',
+      modalTransform: open ? 'translateY(0)' : 'translateY(24px)',
+      showForm: !this.state.submitted,
+      showSuccess: this.state.submitted,
+      submitting: this.state.submitting,
+      submitError: this.state.submitError,
+      submitLabel: this.state.submitting ? 'Sending…' : 'Confirm RSVP',
+      submitBtnOpacity: this.state.submitting ? 0.7 : 1,
+      openModal: () => this.setState({ modalOpen: true, submitted: false, submitError: false }),
+      closeModal: () => this.setState({ modalOpen: false }),
+      overlayClick: () => this.setState({ modalOpen: false }),
+      stopClick: (e) => e.stopPropagation(),
+      submitForm: (e) => {
+        e.preventDefault();
+        const form = e.target;
+        this.setState({ submitting: true, submitError: false });
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        }).then((res) => {
+          if (res.ok) {
+            this.setState({ submitted: true, submitting: false });
+          } else {
+            this.setState({ submitting: false, submitError: true });
+          }
+        }).catch(() => {
+          this.setState({ submitting: false, submitError: true });
+        });
+      },
+
+      joinModalOpacity: this.state.joinModalOpen ? 1 : 0,
+      joinModalPointer: this.state.joinModalOpen ? 'all' : 'none',
+      joinModalTransform: this.state.joinModalOpen ? 'translateY(0)' : 'translateY(24px)',
+      showJoinForm: !this.state.joinSubmitted,
+      showJoinSuccess: this.state.joinSubmitted,
+      joinSubmitting: this.state.joinSubmitting,
+      joinSubmitError: this.state.joinSubmitError,
+      joinSubmitLabel: this.state.joinSubmitting ? 'Sending…' : 'Join Convoy →',
+      joinSubmitBtnOpacity: this.state.joinSubmitting ? 0.7 : 1,
+      openJoinModal: () => this.setState({ joinModalOpen: true, joinSubmitted: false, joinSubmitError: false }),
+      closeJoinModal: () => this.setState({ joinModalOpen: false }),
+      joinOverlayClick: () => this.setState({ joinModalOpen: false }),
+      submitJoinForm: (e) => {
+        e.preventDefault();
+        const form = e.target;
+        this.setState({ joinSubmitting: true, joinSubmitError: false });
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        }).then((res) => {
+          if (res.ok) {
+            this.setState({ joinSubmitted: true, joinSubmitting: false });
+          } else {
+            this.setState({ joinSubmitting: false, joinSubmitError: true });
+          }
+        }).catch(() => {
+          this.setState({ joinSubmitting: false, joinSubmitError: true });
+        });
+      },
+    };
+  }
+}
+
+</script>
+</body>
+</html>
