@@ -448,7 +448,7 @@ class Component extends DCLogic {
   STORE_KEY = 'convoy-auction-bids-v1';
 
   lots = [
-    { id: 1, code: '001', slotId: 'auction-lot-001', slotHint: 'Sculpture — Emma', images: ['./assets/lot-emma-2.png', './assets/lot-emma-1-zoom.png', './assets/lot-emma-3.png'], artist: 'Emma', title: 'I am restrained / I am silent / I am leaking / I am burdensome / I am exhausted / I am demanding / I am hysterical', meta: '2026 · Air-dry clay sculpture · 16 × 20h × 17 cm', desc: 'There is a list of words Emma uses to encapsulate her negative experiences of being a woman. These words and experiences are translated into a sculpture of a woman. Her head is wrung, shoulders lowered and she sits on her own heel.', open: 150 },
+    { id: 1, code: '001', slotId: 'auction-lot-001', slotHint: 'Sculpture — Emma', images: ['./assets/lot-emma-2.png', './assets/lot-emma-1.png', './assets/lot-emma-3.png'], artist: 'Emma', title: 'I am restrained / I am silent / I am leaking / I am burdensome / I am exhausted / I am demanding / I am hysterical', meta: '2026 · Air-dry clay sculpture · 16 × 20h × 17 cm', desc: 'There is a list of words Emma uses to encapsulate her negative experiences of being a woman. These words and experiences are translated into a sculpture of a woman. Her head is wrung, shoulders lowered and she sits on her own heel.', open: 150 },
     { id: 2, code: '002', slotId: 'auction-lot-002', slotHint: 'Painting — Jem Steele', slotSrc: './assets/lot-jem-woman-getting-dressed.jpg', artist: 'Jem Steele', title: 'Woman Getting Dressed', meta: '2026 · Acrylic on primed wood · 19.7 × 25 cm', desc: 'As a continuation from my last Convoy work, I still can\u2019t help but celebrate women and how we operate! Particularly in our private spheres. I\u2019ve painted a woman half-way dressed looking away from the viewer, perhaps into a mirror to briefly check her appearance. I wanted to keep her environment ambiguous, but her pose familiar, as if she\u2019s thinking \u201cright\u2026what do I wear now\u2026\u201d. Whilst she curates her public image, in this moment she is performing to nobody but herself. She is moving how she wants to move and being who is comfortable. I wanted to celebrate her by adorning her in a background that is unmistakably feminine.', open: 150 },
   ];
 
@@ -456,8 +456,6 @@ class Component extends DCLogic {
   bidForm = { name: '', phone: '', email: '', amount: '' };
 
   componentDidMount() {
-    const h = (location.hash || '').slice(1);
-    if (['events', 'auction', 'join'].includes(h)) this.setState({ page: h });
     this.timer = setInterval(() => this.setState({ now: Date.now() }), 1000);
     this.loadBids();
   }

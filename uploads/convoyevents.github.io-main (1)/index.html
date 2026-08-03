@@ -173,24 +173,11 @@
         <sc-for list="{{ shownLots }}" as="lot" hint-placeholder-count="2">
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(272px, 1fr)); gap: clamp(22px, 3.5vw, 40px); padding: clamp(18px, 3vw, 26px); border: 1px solid oklch(0.19 0.008 25 / 0.14); border-top: 2px solid oklch(0.13 0.006 25); background: linear-gradient(155deg, oklch(0.70 0.002 250 / 0.08), transparent 62%); animation: convoyFade 0.5s ease both;">
             <div>
-              <div style="position: relative; z-index: 4; width: 100%; aspect-ratio: 4 / 5; background: oklch(0.945 0.002 250);">
-                <sc-if value="{{ lot.hasGallery }}" hint-placeholder-val="{{ false }}">
-                  <img src="{{ lot.photoSrc }}" loading="lazy" alt="{{ lot.artist }}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; padding: 6%; box-sizing: border-box;">
-                  <div onClick="{{ lot.prevPhoto }}" style="position: absolute; left: 0; top: 0; bottom: 0; width: 20%; cursor: pointer; display: flex; align-items: center; justify-content: flex-start; padding-left: 10px; font-family: 'EB Garamond', serif; font-size: 30px; color: oklch(0.19 0.008 25 / 0.35); user-select: none;" style-hover="color: oklch(0.19 0.008 25);">‹</div>
-                  <div onClick="{{ lot.nextPhoto }}" style="position: absolute; right: 0; top: 0; bottom: 0; width: 20%; cursor: pointer; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-family: 'EB Garamond', serif; font-size: 30px; color: oklch(0.19 0.008 25 / 0.35); user-select: none;" style-hover="color: oklch(0.19 0.008 25);">›</div>
-                  <div style="position: absolute; left: 0; right: 0; bottom: 10px; display: flex; justify-content: center; gap: 7px; pointer-events: none;">
-                    <sc-for list="{{ lot.photoDots }}" as="dot" hint-placeholder-count="4">
-                      <span style="width: 5px; height: 5px; border-radius: 100px; background: oklch(0.19 0.008 25); opacity: {{ dot.opacity }};"></span>
-                    </sc-for>
-                  </div>
-                </sc-if>
-                <sc-if value="{{ lot.noGallery }}" hint-placeholder-val="{{ true }}">
-                  <image-slot id="{{ lot.slotId }}" shape="rect" fit="contain" placeholder="{{ lot.slotHint }}" src="{{ lot.slotSrc }}"></image-slot>
-                </sc-if>
+              <div style="position: relative; width: 100%; aspect-ratio: 4 / 5; background: oklch(0.945 0.002 250);">
+                <image-slot id="{{ lot.slotId }}" shape="rect" fit="contain" placeholder="{{ lot.slotHint }}"></image-slot>
               </div>
               <div style="display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: oklch(0.19 0.008 25 / 0.58);">
                 <span style="white-space: nowrap;">Lot {{ lot.code }}</span>
-                <span>{{ lot.galleryCounter }}</span>
                 <span>{{ lot.status }}</span>
               </div>
             </div>
@@ -242,7 +229,7 @@
         </div>
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: clamp(16px, 2.5vw, 26px);">
             <div style="display: flex; flex-direction: column; gap: 12px; opacity: 0.72;" style-hover="opacity: 1;">
-              <div style="position: relative; z-index: 4; width: 100%; aspect-ratio: 1 / 1; background: oklch(0.952 0.002 250);">
+              <div style="position: relative; width: 100%; aspect-ratio: 1 / 1; background: oklch(0.952 0.002 250);">
                 <img src="./assets/archive/archive-004.webp" alt="Girls at the Beach" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block;">
               </div>
               <div>
@@ -252,7 +239,7 @@
               </div>
             </div>
             <div style="display: flex; flex-direction: column; gap: 12px; opacity: 0.72;" style-hover="opacity: 1;">
-              <div style="position: relative; z-index: 4; width: 100%; aspect-ratio: 1 / 1; background: oklch(0.952 0.002 250);">
+              <div style="position: relative; width: 100%; aspect-ratio: 1 / 1; background: oklch(0.952 0.002 250);">
                 <img src="./assets/archive/archive-003.webp" alt="Nocturnal Blush" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block;">
               </div>
               <div>
@@ -262,7 +249,7 @@
               </div>
             </div>
             <div style="display: flex; flex-direction: column; gap: 12px; opacity: 0.72;" style-hover="opacity: 1;">
-              <div style="position: relative; z-index: 4; width: 100%; aspect-ratio: 1 / 1; background: oklch(0.952 0.002 250);">
+              <div style="position: relative; width: 100%; aspect-ratio: 1 / 1; background: oklch(0.952 0.002 250);">
                 <img src="./assets/archive/archive-002.webp" alt="Alter Ego" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block;">
               </div>
               <div>
@@ -272,7 +259,7 @@
               </div>
             </div>
             <div style="display: flex; flex-direction: column; gap: 12px; opacity: 0.72;" style-hover="opacity: 1;">
-              <div style="position: relative; z-index: 4; width: 100%; aspect-ratio: 1 / 1; background: oklch(0.952 0.002 250);">
+              <div style="position: relative; width: 100%; aspect-ratio: 1 / 1; background: oklch(0.952 0.002 250);">
                 <img src="./assets/archive/archive-001.webp" alt="Sonder" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block;">
               </div>
               <div>
@@ -420,7 +407,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;supabaseUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://wksaqwcxdomdignvjgak.supabase.co&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Auction backend&quot;},&quot;supabaseKey&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indrc2Fxd2N4ZG9tZGlnbnZqZ2FrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU1MDUzOTQsImV4cCI6MjEwMTA4MTM5NH0.OAcOTM_rYbbD7CRAaJ3z1DfkEZmDqLAuhQSG1fCqKXs&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Auction backend&quot;},&quot;bidIncrement&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:10,&quot;min&quot;:5,&quot;max&quot;:100,&quot;step&quot;:5,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Auction backend&quot;}}">
 class Component extends DCLogic {
-  state = { page: 'home', joinStatus: 'open', bids: [], modalLotId: null, step: 'form', error: null, sending: false, toast: null, now: Date.now(), photoIdx: {} };
+  state = { page: 'home', joinStatus: 'open', bids: [], modalLotId: null, step: 'form', error: null, sending: false, toast: null, now: Date.now() };
 
   submitJoin = async (e) => {
     e.preventDefault();
@@ -448,16 +435,14 @@ class Component extends DCLogic {
   STORE_KEY = 'convoy-auction-bids-v1';
 
   lots = [
-    { id: 1, code: '001', slotId: 'auction-lot-001', slotHint: 'Sculpture — Emma', images: ['./assets/lot-emma-2.png', './assets/lot-emma-1-zoom.png', './assets/lot-emma-3.png'], artist: 'Emma', title: 'I am restrained / I am silent / I am leaking / I am burdensome / I am exhausted / I am demanding / I am hysterical', meta: '2026 · Air-dry clay sculpture · 16 × 20h × 17 cm', desc: 'There is a list of words Emma uses to encapsulate her negative experiences of being a woman. These words and experiences are translated into a sculpture of a woman. Her head is wrung, shoulders lowered and she sits on her own heel.', open: 150 },
-    { id: 2, code: '002', slotId: 'auction-lot-002', slotHint: 'Painting — Jem Steele', slotSrc: './assets/lot-jem-woman-getting-dressed.jpg', artist: 'Jem Steele', title: 'Woman Getting Dressed', meta: '2026 · Acrylic on primed wood · 19.7 × 25 cm', desc: 'As a continuation from my last Convoy work, I still can\u2019t help but celebrate women and how we operate! Particularly in our private spheres. I\u2019ve painted a woman half-way dressed looking away from the viewer, perhaps into a mirror to briefly check her appearance. I wanted to keep her environment ambiguous, but her pose familiar, as if she\u2019s thinking \u201cright\u2026what do I wear now\u2026\u201d. Whilst she curates her public image, in this moment she is performing to nobody but herself. She is moving how she wants to move and being who is comfortable. I wanted to celebrate her by adorning her in a background that is unmistakably feminine.', open: 150 },
+    { id: 1, code: '001', slotId: 'auction-lot-001', slotHint: 'Sculpture — Foley Art', artist: 'Foley Art', title: 'Title to come', meta: '2026 · Sculpture · dimensions TBC', desc: 'Description to come — a short paragraph in the artist\u2019s own words about the work.', open: 150 },
+    { id: 2, code: '002', slotId: 'auction-lot-002', slotHint: 'Sculpture — Jem Steele', artist: 'Jem Steele', title: 'Title to come', meta: '2026 · Sculpture · dimensions TBC', desc: 'Description to come — a short paragraph in the artist\u2019s own words about the work.', open: 150 },
   ];
 
 
   bidForm = { name: '', phone: '', email: '', amount: '' };
 
   componentDidMount() {
-    const h = (location.hash || '').slice(1);
-    if (['events', 'auction', 'join'].includes(h)) this.setState({ page: h });
     this.timer = setInterval(() => this.setState({ now: Date.now() }), 1000);
     this.loadBids();
   }
@@ -623,15 +608,6 @@ class Component extends DCLogic {
     };
   }
 
-  stepPhoto = (lotId, delta) => () => {
-    const lot = this.lots.find(l => l.id === lotId);
-    const n = (lot.images || []).length;
-    if (!n) return;
-    const cur = this.state.photoIdx[lotId] || 0;
-    const next = (cur + delta + n) % n;
-    this.setState({ photoIdx: { ...this.state.photoIdx, [lotId]: next } });
-  };
-
   renderVals() {
     const page = this.state.page;
     const active = 'oklch(0.19 0.008 25)';
@@ -642,17 +618,8 @@ class Component extends DCLogic {
     const shownLots = this.lots.map(l => {
       const bids = this.bidsFor(l.id);
       const top = bids[0];
-      const imgs = l.images || [];
-      const idx = Math.min(this.state.photoIdx[l.id] || 0, Math.max(0, imgs.length - 1));
       return {
         ...l,
-        hasGallery: imgs.length > 0,
-        noGallery: imgs.length === 0,
-        photoSrc: imgs[idx] || '',
-        photoDots: imgs.map((_, i) => ({ opacity: i === idx ? 1 : 0.25 })),
-        galleryCounter: imgs.length > 1 ? (idx + 1) + ' / ' + imgs.length : '',
-        prevPhoto: this.stepPhoto(l.id, -1),
-        nextPhoto: this.stepPhoto(l.id, 1),
         status: closed ? 'Closed' : 'Bidding open',
         currentLabel: top ? 'Current bid' : 'Opening bid',
         currentText: top ? this.money(top.amount) : this.money(this.openFor(l)),
