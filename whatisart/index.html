@@ -227,7 +227,7 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
-  &quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 32, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;section&quot;: &quot;RSVP tracker&quot;},
+  &quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 102, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;section&quot;: &quot;RSVP tracker&quot;},
   &quot;capacity&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 300, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 1, &quot;section&quot;: &quot;RSVP tracker&quot;}
 }">
 class Component extends DCLogic {
@@ -254,7 +254,7 @@ class Component extends DCLogic {
   renderVals() {
     const open = this.state.modalOpen;
     const capacity = this.props.capacity ?? 300;
-    const rsvpCount = Math.min(this.props.rsvpCount ?? 32, capacity);
+    const rsvpCount = Math.min(this.props.rsvpCount ?? 102, capacity);
     const spotsLeft = Math.max(0, capacity - rsvpCount);
     const rsvpPercent = Math.min(100, Math.round((rsvpCount / capacity) * 100)) + '%';
     const spotsLeftLabel = spotsLeft > 0 ? `Only ${spotsLeft} spot${spotsLeft === 1 ? '' : 's'} left` : 'At capacity — email us to join the waitlist';
