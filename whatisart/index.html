@@ -46,15 +46,7 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
     input::placeholder, textarea::placeholder { color: oklch(0.95 0.02 80 / 0.35); }
     .lot-stripe { background-image: repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 1px, transparent 9px); }
     .grain-layer { background-image: repeating-linear-gradient(0deg, rgba(243,234,217,0.10) 0px, rgba(243,234,217,0.10) 1px, rgba(0,0,0,0) 1px, rgba(0,0,0,0) 3px), repeating-linear-gradient(90deg, rgba(243,234,217,0.09) 0px, rgba(243,234,217,0.09) 1px, rgba(0,0,0,0) 1px, rgba(0,0,0,0) 3px), url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27420%27 height=%27420%27%3E%3Cfilter id=%27fib%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.95%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27420%27 height=%27420%27 filter=%27url(%23fib)%27 opacity=%270.22%27/%3E%3C/svg%3E'); background-size: auto, auto, 420px 420px; }
-    .lineup-grid > div { border-right: 1px solid oklch(0.95 0.02 80 / 0.15); border-bottom: 1px solid oklch(0.95 0.02 80 / 0.15); }
-    .lineup-grid > div:nth-child(3n) { border-right: none; }
-    .lineup-grid > div:last-child:nth-child(3n+1) { grid-column: 1 / -1; text-align: center !important; }
-    @media (max-width: 640px) {
-      .lineup-grid { grid-template-columns: repeat(2, 1fr) !important; }
-      .lineup-grid > div:nth-child(3n) { border-right: 1px solid oklch(0.95 0.02 80 / 0.15); }
-      .lineup-grid > div:nth-child(2n) { border-right: none; }
-      .lineup-grid > div:last-child:nth-child(odd) { grid-column: 1 / -1; text-align: center !important; }
-    }
+    .lineup-group:last-child { margin-bottom: 0 !important; }
   </style>
 </helmet>
 
@@ -122,11 +114,22 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
 
     <div style="width: 100%; max-width: 700px; border-top: 1px solid oklch(0.95 0.02 80 / 0.15); padding-top: 40px;">
       <div style="display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 9px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.6); margin-bottom: 24px;"><span style="width: 6px; height: 6px; border-radius: 100px; background: oklch(0.95 0.02 80 / 0.8);"></span>Lineup</div>
-      <div class="lineup-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid oklch(0.95 0.02 80 / 0.15); border-top: 2px solid oklch(0.95 0.02 80 / 0.9);">
-        <sc-for list="{{ lineup }}" as="l" hint-placeholder-count="4">
-          <div style="background: oklch(0.28 0.09 20); padding: 20px 16px; text-align: left;">
-            <div style="font-size: 9px; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 6px;">{{ l.role }}</div>
-            <div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 16px; text-transform: uppercase; line-height: 1.1;">{{ l.name }}</div>
+      <div>
+        <sc-for list="{{ lineupGroups }}" as="g" hint-placeholder-count="3">
+          <div class="lineup-group" style="margin-bottom: 36px;">
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px;">
+              <div style="flex: 1; height: 1px; background: oklch(0.95 0.02 80 / 0.15);"></div>
+              <div style="font-size: 9px; font-weight: 300; letter-spacing: 0.24em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.55);">{{ g.category }}</div>
+              <div style="flex: 1; height: 1px; background: oklch(0.95 0.02 80 / 0.15);"></div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; column-gap: 14px; row-gap: 12px; align-items: baseline; text-align: center; font-family: 'EB Garamond', serif; font-weight: 800; font-size: 21px; text-transform: uppercase; line-height: 1.1;">
+              <sc-for list="{{ g.members }}" as="m" hint-placeholder-count="3">
+                <sc-if value="{{ m.dot }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size: 15px; color: oklch(0.95 0.02 80 / 0.35);">·</span>
+                </sc-if>
+                <span>{{ m.name }} <sc-if value="{{ m.role }}" hint-placeholder-val="{{ false }}"><span style="font-family: 'Outfit', sans-serif; font-size: 9px; font-weight: 300; letter-spacing: 0.12em; color: oklch(0.95 0.02 80 / 0.5);">{{ m.role }}</span></sc-if></span>
+              </sc-for>
+            </div>
           </div>
         </sc-for>
       </div>
@@ -227,7 +230,7 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
-  &quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 151, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;section&quot;: &quot;RSVP tracker&quot;},
+  &quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 158, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;section&quot;: &quot;RSVP tracker&quot;},
   &quot;capacity&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 300, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 1, &quot;section&quot;: &quot;RSVP tracker&quot;}
 }">
 class Component extends DCLogic {
@@ -243,29 +246,39 @@ class Component extends DCLogic {
     { label: 'Entry', value: 'Free', sub: 'RSVP required' },
   ];
 
-  lineup = [
-    { role: 'Live music', name: 'SFJ Trio' },
-    { role: 'Musician (Keys)', name: 'Julian Sanchez' },
-    { role: 'Musician (Sax)', name: 'Taylor DeCol' },
-    { role: 'Musician (Drums)', name: 'Deva Permana' },
-    { role: 'DJ', name: 'EQUINØX' },
-    { role: 'Live painter', name: 'Michelle Gronich' },
-    { role: 'Live painter', name: 'Printinghooke' },
-    { role: 'Fashion Designer', name: 'Amelie Carter' },
-    { role: 'Fashion Designer', name: 'Charlie Owens' },
-    { role: 'Floristry', name: 'Bella' },
+  lineupGroups = [
+    { category: 'Trio', members: [
+      { name: 'SFJ Trio' },
+      { name: 'Julian Sanchez', role: 'Keys', dot: true },
+      { name: 'Taylor DeCol', role: 'Sax', dot: true },
+      { name: 'Deva Permana', role: 'Drums', dot: true },
+    ]},
+    { category: 'DJ', members: [
+      { name: 'EQUINØX' },
+    ]},
+    { category: 'Live painting', members: [
+      { name: 'Michelle Gronich' },
+      { name: 'Printinghooke', dot: true },
+    ]},
+    { category: 'Fashion design', members: [
+      { name: 'Amelie Carter' },
+      { name: 'Charlie Owens', dot: true },
+    ]},
+    { category: 'Floristry', members: [
+      { name: 'Bella' },
+    ]},
   ];
 
   renderVals() {
     const open = this.state.modalOpen;
     const capacity = this.props.capacity ?? 300;
-    const rsvpCount = Math.min(this.props.rsvpCount ?? 151, capacity);
+    const rsvpCount = Math.min(this.props.rsvpCount ?? 158, capacity);
     const spotsLeft = Math.max(0, capacity - rsvpCount);
     const rsvpPercent = Math.min(100, Math.round((rsvpCount / capacity) * 100)) + '%';
     const spotsLeftLabel = spotsLeft > 0 ? `Only ${spotsLeft} spot${spotsLeft === 1 ? '' : 's'} left` : 'At capacity — email us to join the waitlist';
     return {
       metaBlocks: this.metaBlocks,
-      lineup: this.lineup,
+      lineupGroups: this.lineupGroups,
       capacity, rsvpCount, rsvpPercent, spotsLeftLabel,
       modalOpacity: open ? 1 : 0,
       modalPointer: open ? 'all' : 'none',
