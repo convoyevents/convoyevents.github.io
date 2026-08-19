@@ -113,7 +113,7 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
     <div style="font-size: 12px; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 64px;">Part of the Convoy community — <a onClick="{{ openJoinModal }}" style="text-decoration: underline; text-underline-offset: 3px; cursor: pointer;">not yet one of us?</a></div>
 
     <div style="width: 100%; max-width: 700px; border-top: 1px solid oklch(0.95 0.02 80 / 0.15); padding-top: 40px;">
-    <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 36px;"><span style="width: 34px; height: 1px; background: oklch(0.95 0.02 80 / 0.5);"></span><div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: clamp(24px, 3.6vw, 30px); text-transform: uppercase; letter-spacing: 0.06em; line-height: 1;">Lineup</div><span style="width: 34px; height: 1px; background: oklch(0.95 0.02 80 / 0.5);"></span></div>
+      <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 36px;"><span style="width: 34px; height: 1px; background: oklch(0.95 0.02 80 / 0.5);"></span><div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: clamp(24px, 3.6vw, 30px); text-transform: uppercase; letter-spacing: 0.06em; line-height: 1;">Lineup</div><span style="width: 34px; height: 1px; background: oklch(0.95 0.02 80 / 0.5);"></span></div>
       <div>
         <sc-for list="{{ lineupGroups }}" as="g" hint-placeholder-count="3">
           <div class="lineup-group" style="margin-bottom: 36px;">
@@ -230,7 +230,7 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
-  &quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 185, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;section&quot;: &quot;RSVP tracker&quot;},
+  &quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 208, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;section&quot;: &quot;RSVP tracker&quot;},
   &quot;capacity&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 300, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 1, &quot;section&quot;: &quot;RSVP tracker&quot;}
 }">
 class Component extends DCLogic {
@@ -272,7 +272,7 @@ class Component extends DCLogic {
   renderVals() {
     const open = this.state.modalOpen;
     const capacity = this.props.capacity ?? 300;
-    const rsvpCount = Math.min(this.props.rsvpCount ?? 185, capacity);
+    const rsvpCount = Math.min(this.props.rsvpCount ?? 208, capacity);
     const spotsLeft = Math.max(0, capacity - rsvpCount);
     const rsvpPercent = Math.min(100, Math.round((rsvpCount / capacity) * 100)) + '%';
     const spotsLeftLabel = spotsLeft > 0 ? `Only ${spotsLeft} spot${spotsLeft === 1 ? '' : 's'} left` : 'At capacity — email us to join the waitlist';
