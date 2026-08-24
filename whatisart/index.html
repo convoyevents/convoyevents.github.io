@@ -83,7 +83,7 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
   <!-- MAIN -->
   <main style="position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 32px clamp(20px, 6vw, 40px) 80px;">
     <div style="display: flex; align-items: center; gap: 12px; font-size: 9px; font-weight: 300; letter-spacing: 0.24em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.6); margin-bottom: 24px;"><span style="width: 26px; height: 1px; background: oklch(0.95 0.02 80 / 0.8);"></span>Convoy presents<span style="width: 26px; height: 1px; background: oklch(0.95 0.02 80 / 0.8);"></span></div>
-    <div style="font-family: 'EB Garamond', serif; font-style: italic; font-weight: 400; font-size: clamp(20px, 2.6vw, 30px); line-height: 1.35; margin-bottom: 48px; color: oklch(0.95 0.02 80 / 0.75); text-wrap: pretty;">A night of jazz, live painting, and a community with no wrong answers.</div>
+    <div style="font-family: 'EB Garamond', serif; font-style: italic; font-weight: 400; font-size: clamp(20px, 2.6vw, 30px); line-height: 1.35; margin-bottom: 48px; color: oklch(0.95 0.02 80 / 0.75); text-wrap: pretty;">A monthly third space for artists & creative minds.</div>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1px; background: oklch(0.95 0.02 80 / 0.15); border: 1px solid oklch(0.95 0.02 80 / 0.15); border-top: 2px solid oklch(0.95 0.02 80 / 0.9); margin-bottom: 48px; max-width: 100%;">
       <sc-for list="{{ metaBlocks }}" as="m" hint-placeholder-count="4">
@@ -230,7 +230,7 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
-  &quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 248, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;section&quot;: &quot;RSVP tracker&quot;},
+  &quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 286, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;section&quot;: &quot;RSVP tracker&quot;},
   &quot;capacity&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 300, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 1, &quot;section&quot;: &quot;RSVP tracker&quot;}
 }">
 class Component extends DCLogic {
@@ -273,7 +273,7 @@ class Component extends DCLogic {
   renderVals() {
     const open = this.state.modalOpen;
     const capacity = this.props.capacity ?? 300;
-    const rsvpCount = Math.min(this.props.rsvpCount ?? 248, capacity);
+    const rsvpCount = Math.min(this.props.rsvpCount ?? 286, capacity);
     const spotsLeft = Math.max(0, capacity - rsvpCount);
     const rsvpPercent = Math.min(100, Math.round((rsvpCount / capacity) * 100)) + '%';
     const spotsLeftLabel = spotsLeft > 0 ? `Only ${spotsLeft} spot${spotsLeft === 1 ? '' : 's'} left` : 'At capacity — email us to join the waitlist';
