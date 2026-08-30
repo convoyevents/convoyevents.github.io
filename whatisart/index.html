@@ -64,7 +64,7 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
     <div style="display: flex; flex-wrap: wrap; gap: 10px clamp(13px, 3vw, 30px); align-items: center;">
       <a href="../#events" style="font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding-bottom: 3px; border-bottom: 1px solid transparent; color: oklch(0.95 0.02 80 / 0.68);" style-hover="color: oklch(0.95 0.02 80); border-bottom-color: oklch(0.95 0.02 80);">Events</a>
       <a href="../auction/" style="font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding-bottom: 3px; border-bottom: 1px solid transparent; color: oklch(0.95 0.02 80 / 0.68);" style-hover="color: oklch(0.95 0.02 80); border-bottom-color: oklch(0.95 0.02 80);">Auction</a>
-      <div onClick="{{ openJoinModal }}" style="cursor: pointer; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 9px clamp(15px, 3.4vw, 20px); border: 1px solid oklch(0.95 0.02 80 / 0.68); border-radius: 100px; color: oklch(0.95 0.02 80 / 0.85); white-space: nowrap;" style-hover="background: oklch(0.95 0.02 80); color: oklch(0.28 0.09 20); border-color: oklch(0.95 0.02 80);">Join</div>
+      <a href="../join/" style="cursor: pointer; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 9px clamp(15px, 3.4vw, 20px); border: 1px solid oklch(0.95 0.02 80 / 0.68); border-radius: 100px; color: oklch(0.95 0.02 80 / 0.85); white-space: nowrap;" style-hover="background: oklch(0.95 0.02 80); color: oklch(0.28 0.09 20); border-color: oklch(0.95 0.02 80);">Join</a>
     </div>
   </nav>
 
@@ -110,11 +110,14 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
 
     <button onClick="{{ openModal }}" style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; background: oklch(0.95 0.02 80); color: oklch(0.28 0.09 20); border: none; cursor: pointer; padding: 17px 48px; border-radius: 2px; margin-bottom: 20px; box-shadow: 0 14px 44px -18px oklch(0.1 0.04 20 / 0.8);" style-hover="background: oklch(0.88 0.025 80);">Reserve your spot →</button>
 
-    <div style="font-size: 12px; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 64px;">Part of the Convoy community — <a onClick="{{ openJoinModal }}" style="text-decoration: underline; text-underline-offset: 3px; cursor: pointer;">not yet one of us?</a></div>
+    <div style="font-size: 12px; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 64px;">Part of the Convoy community — <a href="../join/" style="text-decoration: underline; text-underline-offset: 3px; cursor: pointer;">not yet one of us?</a></div>
 
     <div style="width: 100%; max-width: 700px; border-top: 1px solid oklch(0.95 0.02 80 / 0.15); padding-top: 40px;">
       <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 36px;"><span style="width: 34px; height: 1px; background: oklch(0.95 0.02 80 / 0.5);"></span><div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: clamp(24px, 3.6vw, 30px); text-transform: uppercase; letter-spacing: 0.06em; line-height: 1;">Lineup</div><span style="width: 34px; height: 1px; background: oklch(0.95 0.02 80 / 0.5);"></span></div>
-      <div>
+      <sc-if value="{{ lineupPending }}" hint-placeholder-val="{{ false }}">
+        <div style="font-family: 'EB Garamond', serif; font-style: italic; font-size: clamp(17px, 2.2vw, 21px); line-height: 1.4; color: oklch(0.95 0.02 80 / 0.6); text-wrap: pretty;">Artists, musicians and makers announced closer to the night.</div>
+      </sc-if>
+      <sc-if value="{{ hasLineup }}" hint-placeholder-val="{{ true }}">
         <sc-for list="{{ lineupGroups }}" as="g" hint-placeholder-count="3">
           <div class="lineup-group" style="margin-bottom: 36px;">
             <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px;">
@@ -132,7 +135,7 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
             </div>
           </div>
         </sc-for>
-      </div>
+      </sc-if>
     </div>
   </main>
 
@@ -150,7 +153,7 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
       <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
         <div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 22px; text-transform: uppercase; margin-bottom: 10px;">Reserve your spot</div>
         <div style="font-size: 13px; color: oklch(0.95 0.02 80 / 0.6); margin-bottom: 28px;">Free entry — we'll send everything you need before the night.</div>
-        <form action="https://convoy-form-sync.quiet-tree-ba04.workers.dev/submit-rsvp" method="POST" style="display: flex; flex-direction: column; gap: 16px;" onSubmit="{{ submitForm }}">
+        <form action="https://formspree.io/f/xbgjlwdz" method="POST" style="display: flex; flex-direction: column; gap: 16px;" onSubmit="{{ submitForm }}">
           <input type="hidden" name="_subject" value="New RSVP — What Is Art?">
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
             <div>
@@ -188,98 +191,40 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
     </div>
   </div>
 
-  <!-- JOIN CONVOY MODAL -->
-  <div style="position: fixed; inset: 0; z-index: 200; background: oklch(0.22 0.07 20 / 0.9); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: {{ joinModalOpacity }}; pointer-events: {{ joinModalPointer }}; transition: opacity 0.25s;" onClick="{{ joinOverlayClick }}">
-    <div style="background: oklch(0.28 0.09 20); border: 1px solid oklch(0.95 0.02 80 / 0.15); border-top: 2px solid oklch(0.95 0.02 80 / 0.9); border-radius: 2px; width: 100%; max-width: 460px; padding: 40px; position: relative; transform: {{ joinModalTransform }}; transition: transform 0.25s;" onClick="{{ stopClick }}">
-      <button onClick="{{ closeJoinModal }}" style="position: absolute; top: 18px; right: 20px; background: none; border: none; cursor: pointer; font-size: 10px; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); font-family: 'Outfit', sans-serif;">Close ✕</button>
-
-      <sc-if value="{{ showJoinForm }}" hint-placeholder-val="{{ true }}">
-        <div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 22px; text-transform: uppercase; margin-bottom: 10px;">Join Convoy</div>
-        <div style="font-size: 13px; color: oklch(0.95 0.02 80 / 0.6); margin-bottom: 28px;">Become part of the community — first to know about the next one.</div>
-        <form action="https://convoy-form-sync.quiet-tree-ba04.workers.dev/submit-join" method="POST" style="display: flex; flex-direction: column; gap: 16px;" onSubmit="{{ submitJoinForm }}">
-          <input type="hidden" name="_subject" value="New Convoy sign-up — What Is Art?">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-            <div>
-              <label style="display: block; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 7px;">First name</label>
-              <input name="first_name" required="" style="width: 100%; padding: 12px 13px; background: transparent; border: 1px solid oklch(0.95 0.02 80 / 0.25); border-radius: 2px; color: inherit; font-family: inherit; font-size: 13px;">
-            </div>
-            <div>
-              <label style="display: block; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 7px;">Last name</label>
-              <input name="last_name" required="" style="width: 100%; padding: 12px 13px; background: transparent; border: 1px solid oklch(0.95 0.02 80 / 0.25); border-radius: 2px; color: inherit; font-family: inherit; font-size: 13px;">
-            </div>
-          </div>
-          <div>
-            <label style="display: block; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 7px;">Email</label>
-            <input type="email" name="email" required="" placeholder="your@email.com" style="width: 100%; padding: 12px 13px; background: transparent; border: 1px solid oklch(0.95 0.02 80 / 0.25); border-radius: 2px; color: inherit; font-family: inherit; font-size: 13px;">
-          </div>
-          <sc-if value="{{ joinSubmitError }}" hint-placeholder-val="{{ false }}">
-            <div style="font-size: 12px; color: oklch(0.75 0.15 30);">Something went wrong — please try again.</div>
-          </sc-if>
-          <button type="submit" disabled="{{ joinSubmitting }}" style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; background: oklch(0.95 0.02 80); color: oklch(0.28 0.09 20); border: none; cursor: pointer; padding: 15px; border-radius: 2px; margin-top: 8px; opacity: {{ joinSubmitBtnOpacity }};">{{ joinSubmitLabel }}</button>
-        </form>
-      </sc-if>
-
-      <sc-if value="{{ showJoinSuccess }}" hint-placeholder-val="{{ false }}">
-        <div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 26px; text-transform: uppercase; margin-bottom: 14px;">You're in.</div>
-        <p style="font-size: 14px; color: oklch(0.95 0.02 80 / 0.65); margin: 0;">Welcome to Convoy — keep an eye on your inbox.</p>
-      </sc-if>
-    </div>
-  </div>
-
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{
-  &quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 350, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;section&quot;: &quot;RSVP tracker&quot;},
-  &quot;capacity&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 350, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 1, &quot;section&quot;: &quot;RSVP tracker&quot;}
-}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 0, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;section&quot;: &quot;RSVP tracker&quot;}, &quot;capacity&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 300, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 1, &quot;section&quot;: &quot;RSVP tracker&quot;}}">
 class Component extends DCLogic {
   state = {
     modalOpen: false, submitted: false, submitting: false, submitError: false,
-    joinModalOpen: false, joinSubmitted: false, joinSubmitting: false, joinSubmitError: false,
   };
 
   metaBlocks = [
-    { label: 'Date', value: 'Thu, Aug 27' },
+    { label: 'Date', value: 'Thu, Sep 24' },
     { label: 'Doors', value: '7pm – 12am' },
     { label: 'Venue', value: 'Arcade Bar, Martin Place' },
     { label: 'Entry', value: 'Free', sub: 'RSVP required' },
   ];
 
-  lineupGroups = [
-    { category: 'Trio', members: [
-      { name: 'SFJ Trio' },
-      { name: 'Julian Sanchez', role: 'Keys', dot: true },
-      { name: 'Taylor DeCol', role: 'Sax', dot: true },
-      { name: 'Deva Permana', role: 'Drums', dot: true },
-    ]},
-    { category: 'DJ', members: [
-      { name: 'EQUINØX' },
-    ]},
-    { category: 'Live painting', members: [
-      { name: 'Michelle Gronich' },
-      { name: 'Printinghooke', dot: true },
-    ]},
-    { category: 'Fashion design', members: [
-      { name: 'Amelie Carter' },
-      { name: 'Grace Scott', dot: true },
-      { name: 'Charlie Owens', dot: true },
-    ]},
-    { category: 'Floristry', members: [
-      { name: 'Bella' },
-    ]},
-  ];
+  lineupGroups = [];
 
   renderVals() {
     const open = this.state.modalOpen;
-    const capacity = this.props.capacity ?? 350;
-    const rsvpCount = Math.min(this.props.rsvpCount ?? 350, capacity);
+    const capacity = this.props.capacity ?? 300;
+    const rsvpCount = Math.min(this.props.rsvpCount ?? 0, capacity);
     const spotsLeft = Math.max(0, capacity - rsvpCount);
     const rsvpPercent = Math.min(100, Math.round((rsvpCount / capacity) * 100)) + '%';
-    const spotsLeftLabel = spotsLeft > 0 ? `Only ${spotsLeft} spot${spotsLeft === 1 ? '' : 's'} left` : 'At capacity — email us to join the waitlist';
+    const spotsLeftLabel = spotsLeft === 0
+      ? 'At capacity — email us to join the waitlist'
+      : rsvpCount === 0
+        ? 'RSVPs just opened'
+        : `Only ${spotsLeft} spot${spotsLeft === 1 ? '' : 's'} left`;
     return {
       metaBlocks: this.metaBlocks,
       lineupGroups: this.lineupGroups,
+      hasLineup: this.lineupGroups.length > 0,
+      lineupPending: this.lineupGroups.length === 0,
       capacity, rsvpCount, rsvpPercent, spotsLeftLabel,
       modalOpacity: open ? 1 : 0,
       modalPointer: open ? 'all' : 'none',
@@ -313,37 +258,6 @@ class Component extends DCLogic {
         });
       },
 
-      joinModalOpacity: this.state.joinModalOpen ? 1 : 0,
-      joinModalPointer: this.state.joinModalOpen ? 'all' : 'none',
-      joinModalTransform: this.state.joinModalOpen ? 'translateY(0)' : 'translateY(24px)',
-      showJoinForm: !this.state.joinSubmitted,
-      showJoinSuccess: this.state.joinSubmitted,
-      joinSubmitting: this.state.joinSubmitting,
-      joinSubmitError: this.state.joinSubmitError,
-      joinSubmitLabel: this.state.joinSubmitting ? 'Sending…' : 'Join Convoy →',
-      joinSubmitBtnOpacity: this.state.joinSubmitting ? 0.7 : 1,
-      openJoinModal: () => this.setState({ joinModalOpen: true, joinSubmitted: false, joinSubmitError: false }),
-      closeJoinModal: () => this.setState({ joinModalOpen: false }),
-      joinOverlayClick: () => this.setState({ joinModalOpen: false }),
-      submitJoinForm: (e) => {
-        e.preventDefault();
-        const form = e.target;
-        this.setState({ joinSubmitting: true, joinSubmitError: false });
-        fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { Accept: 'application/json' },
-        }).then((res) => {
-          if (res.ok) {
-            this.setState({ joinSubmitted: true, joinSubmitting: false });
-          } else {
-            this.setState({ joinSubmitting: false, joinSubmitError: true });
-          }
-        }).catch(() => {
-          this.setState({ joinSubmitting: false, joinSubmitError: true });
-          
-        });
-      },
     };
   }
 }
