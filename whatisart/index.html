@@ -97,21 +97,6 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
       </sc-for>
     </div>
 
-    <div style="width: 100%; max-width: 320px; margin-bottom: 32px;">
-      <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.55); margin-bottom: 8px;">
-        <span>{{ rsvpCount }} RSVP'd</span>
-        <span>Capacity {{ capacity }}</span>
-      </div>
-      <div style="height: 4px; background: oklch(0.95 0.02 80 / 0.15); border-radius: 2px; overflow: hidden;">
-        <div style="height: 100%; width: {{ rsvpPercent }}; background: oklch(0.95 0.02 80); border-radius: 2px;"></div>
-      </div>
-      <div style="font-family: 'EB Garamond', serif; font-style: italic; font-size: 13px; color: oklch(0.95 0.02 80 / 0.75); margin-top: 10px;">{{ spotsLeftLabel }}</div>
-    </div>
-
-    <button onClick="{{ openModal }}" style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; background: oklch(0.95 0.02 80); color: oklch(0.28 0.09 20); border: none; cursor: pointer; padding: 17px 48px; border-radius: 2px; margin-bottom: 20px; box-shadow: 0 14px 44px -18px oklch(0.1 0.04 20 / 0.8);" style-hover="background: oklch(0.88 0.025 80);">Reserve your spot →</button>
-
-    <div style="font-size: 12px; color: oklch(0.95 0.02 80 / 0.5); margin-bottom: 64px;">Part of the Convoy community — <a href="../join/" style="text-decoration: underline; text-underline-offset: 3px; cursor: pointer;">not yet one of us?</a></div>
-
     <div style="width: 100%; max-width: 700px; border-top: 1px solid oklch(0.95 0.02 80 / 0.15); padding-top: 40px;">
       <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 36px;"><span style="width: 34px; height: 1px; background: oklch(0.95 0.02 80 / 0.5);"></span><div style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: clamp(24px, 3.6vw, 30px); text-transform: uppercase; letter-spacing: 0.06em; line-height: 1;">Lineup</div><span style="width: 34px; height: 1px; background: oklch(0.95 0.02 80 / 0.5);"></span></div>
       <sc-if value="{{ lineupPending }}" hint-placeholder-val="{{ false }}">
@@ -138,6 +123,21 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
           </div>
         </sc-for>
       </sc-if>
+
+      <div style="width: 100%; max-width: 320px; margin: 48px auto 32px;">
+        <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; color: oklch(0.95 0.02 80 / 0.55); margin-bottom: 8px;">
+          <span>{{ rsvpCount }} RSVP'd</span>
+          <span>Capacity {{ capacity }}</span>
+        </div>
+        <div style="height: 4px; background: oklch(0.95 0.02 80 / 0.15); border-radius: 2px; overflow: hidden;">
+          <div style="height: 100%; width: {{ rsvpPercent }}; background: oklch(0.95 0.02 80); border-radius: 2px;"></div>
+        </div>
+        <div style="font-family: 'EB Garamond', serif; font-style: italic; font-size: 13px; color: oklch(0.95 0.02 80 / 0.75); margin-top: 10px;">{{ spotsLeftLabel }}</div>
+      </div>
+
+      <button onClick="{{ openModal }}" style="font-family: 'EB Garamond', serif; font-weight: 800; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; background: oklch(0.95 0.02 80); color: oklch(0.28 0.09 20); border: none; cursor: pointer; padding: 17px 48px; border-radius: 2px; margin-bottom: 20px; box-shadow: 0 14px 44px -18px oklch(0.1 0.04 20 / 0.8);" style-hover="background: oklch(0.88 0.025 80);">Reserve your spot →</button>
+
+      <div style="font-size: 12px; color: oklch(0.95 0.02 80 / 0.5);">Part of the Convoy community — <a href="../join/" style="text-decoration: underline; text-underline-offset: 3px; cursor: pointer;">not yet one of us?</a></div>
     </div>
   </main>
 
@@ -196,7 +196,7 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 212, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;max&quot;: 300, &quot;step&quot;: 5, &quot;section&quot;: &quot;RSVP tracker&quot;}, &quot;capacity&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 300, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 50, &quot;max&quot;: 500, &quot;step&quot;: 10, &quot;section&quot;: &quot;RSVP tracker&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;rsvpCount&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 212, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 0, &quot;max&quot;: 300, &quot;step&quot;: 1, &quot;section&quot;: &quot;RSVP tracker&quot;}, &quot;capacity&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 300, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 50, &quot;max&quot;: 500, &quot;step&quot;: 10, &quot;section&quot;: &quot;RSVP tracker&quot;}}">
 class Component extends DCLogic {
   state = {
     modalOpen: false, submitted: false, submitting: false, submitError: false,
@@ -224,8 +224,9 @@ class Component extends DCLogic {
       { name: 'Fiona Macpherson' },
       { name: 'Alessia Zanetti', dot: true },
       { name: 'Catherine Weng', dot: true },
+      { name: 'Marina Qing Seet', dot: true },
     ]},
-        { category: 'Florist', members: [
+    { category: 'Florist', members: [
       { name: 'Flowers Belladonna' },
     ]},
     { category: 'DJ', members: [
