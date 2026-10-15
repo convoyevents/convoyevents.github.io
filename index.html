@@ -37,6 +37,7 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
   <meta name="twitter:description" content="A community built for creators and admirers of art.">
   <meta name="twitter:image" content="https://convoyevents.au/assets/og-preview.png">
   <link rel="icon" type="image/png" href="./assets/convoy-favicon.png">
+  <link rel="preload" as="image" href="./assets/convoy-bg-poster.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,800;1,400;1,800&amp;family=Outfit:wght@300;400;500&amp;display=swap" rel="stylesheet">
@@ -46,16 +47,34 @@ src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
     a { color: inherit; text-decoration: none; }
     a:hover { color: #ffffff; }
     ::selection { background: #ffffff; color: #111111; }
+
+    /* Hide the big "play" button iOS shows when autoplay is blocked (e.g. Low Power Mode) */
+    #bg-video::-webkit-media-controls,
+    #bg-video::-webkit-media-controls-panel,
+    #bg-video::-webkit-media-controls-start-playback-button,
+    #bg-video::-webkit-media-controls-overlay-play-button {
+      display: none !important;
+      -webkit-appearance: none;
+    }
   </style>
 </helmet>
 
-<div style="min-height: 100svh; position: relative; background: #0b0b0b; color: #ffffff; font-family: 'Outfit', sans-serif; font-size: 14px; display: flex; flex-direction: column; overflow: hidden;">
+<!-- Poster image sits on the wrapper too, so the background never looks empty even if the video can't play -->
+<div style="min-height: 100svh; position: relative; background: #0b0b0b url('./assets/convoy-bg-poster.jpg') center / cover no-repeat; color: #ffffff; font-family: 'Outfit', sans-serif; font-size: 14px; display: flex; flex-direction: column; overflow: hidden;">
 
-  <video src="./assets/convoy-bg.mp4" autoplay="" muted="" loop="" playsinline="" preload="auto" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;"></video>
+  <video id="bg-video"
+         autoplay muted loop playsinline webkit-playsinline
+         preload="auto"
+         poster="./assets/convoy-bg-poster.jpg"
+         disablepictureinpicture disableremoteplayback
+         aria-hidden="true" tabindex="-1"
+         style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none;">
+    <source src="./assets/convoy-bg.mp4" type="video/mp4">
+  </video>
   <div style="position: absolute; inset: 0; z-index: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.6) 100%);"></div>
 
   <nav style="position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px 16px; padding: 18px clamp(16px, 4vw, 48px);">
-    <a href="./" style="display: flex; align-items: baseline; gap: 10px; font-family: 'EB Garamond', serif; font-weight: 800; font-size: clamp(13px, 3vw, 15px); letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap;">Convoy <img src="./assets/shrug-mark.png" alt="Convoy" style="height: clamp(10px, 2.6vw, 11px); width: auto; display: block; filter: invert(1);"></a>
+    <a href="https://www.instagram.com/convoy.au/" target="_blank" rel="noopener" style="display: flex; align-items: baseline; gap: 10px; font-family: 'EB Garamond', serif; font-weight: 800; font-size: clamp(13px, 3vw, 15px); letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap;">Convoy <img src="./assets/shrug-mark.png" alt="Convoy" style="height: clamp(10px, 2.6vw, 11px); width: auto; display: block; filter: invert(1);"></a>
     <a href="https://events.humanitix.com/what-is-art-masquerade" style="font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 9px clamp(15px, 3.4vw, 20px); border: 1px solid rgba(255,255,255,0.75); border-radius: 100px; white-space: nowrap;" style-hover="background: #ffffff; color: #111111; border-color: #ffffff;">Events</a>
   </nav>
 
@@ -75,15 +94,44 @@ class Component extends DCLogic {
   componentDidMount() {
     const h = (location.hash || '').slice(1);
     if (h === 'events' || h === 'auction') location.replace('https://events.humanitix.com/what-is-art-masquerade');
-    const v = document.querySelector('video');
-    if (v) {
-      v.muted = true; v.defaultMuted = true; v.playsInline = true;
-      v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
-      const play = () => v.play().catch(() => {});
-      play();
-      v.addEventListener('canplay', play, { once: true });
-      document.addEventListener('touchstart', play, { once: true });
-    }
+
+    const v = document.getElementById('bg-video');
+    if (!v) return;
+
+    // Frameworks often drop the `muted` attribute when rendering; browsers only
+    // allow autoplay for muted video, so force it as both property and attribute.
+    v.muted = true;
+    v.defaultMuted = true;
+    v.playsInline = true;
+    v.setAttribute('muted', '');
+    v.setAttribute('playsinline', '');
+    v.setAttribute('webkit-playsinline', '');
+
+    const tryPlay = () => {
+      if (!v.paused) return;
+      v.muted = true;
+      const p = v.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    };
+
+    // 1. Try straight away, and again once the video has data
+    tryPlay();
+    v.addEventListener('loadedmetadata', tryPlay);
+    v.addEventListener('canplay', tryPlay);
+
+    // 2. If the browser blocked autoplay, start on the first interaction of any kind
+    const interactionEvents = ['touchstart', 'pointerdown', 'click', 'scroll', 'keydown'];
+    interactionEvents.forEach(e => document.addEventListener(e, tryPlay, { passive: true }));
+    v.addEventListener('playing', () => {
+      interactionEvents.forEach(e => document.removeEventListener(e, tryPlay));
+    }, { once: true });
+
+    // 3. Resume after switching tabs/apps, or returning via the back button
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) tryPlay(); });
+    window.addEventListener('pageshow', tryPlay);
+
+    // 4. Some mobile browsers pause the video on their own; nudge it back
+    v.addEventListener('pause', () => { if (!document.hidden) setTimeout(tryPlay, 300); });
   }
   renderVals() { return {}; }
 }
