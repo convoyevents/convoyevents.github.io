@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1074129428626307');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1074129428626307&ev=PageView&noscript=1"
+/></noscript>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>CONVOY</title>
+  <meta name="description" content="A community built for creators and admirers of art.">
+  <link rel="icon" type="image/png" href="./assets/convoy-favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+  <script src="./image-slot.js"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    html, body { margin: 0; padding: 0; background: #0a0a0a; }
+    * { box-sizing: border-box; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: #6E1423; }
+    ::selection { background: #6E1423; color: #ffffff; }
+    input::placeholder { color: rgba(10,10,10,0.35); }
+    input:focus { outline: none; }
+    #bg-video::-webkit-media-controls, #bg-video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; }
+  </style>
+</helmet>
+
+<div style="font-family: 'EB Garamond', 'Times New Roman', serif; font-size: 15px; line-height: 1.75; color: #ffffff; background: #0a0a0a; overflow-x: hidden; min-height: 100svh; display: flex; flex-direction: column;">
+  <section id="top" data-screen-label="Hero" style="position: relative; flex: none; min-height: 100svh; display: flex; flex-direction: column; background: #0a0a0a url('./assets/convoy-bg-poster.jpg') center / cover no-repeat; overflow: hidden;">
+    <sc-if value="{{ showVideo }}" hint-placeholder-val="{{ true }}">
+      <video id="bg-video" autoplay="" muted="" loop="" playsinline="" preload="auto" poster="./assets/convoy-bg-poster.jpg" aria-hidden="true" tabindex="-1" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+        <source src="./assets/convoy-bg.mp4" type="video/mp4">
+      </video>
+    </sc-if>
+    <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.3) 45%, rgba(10,10,10,0.7) 100%);"></div>
+
+    <nav style="position: relative; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 24px; padding: 20px clamp(20px, 5vw, 64px);">
+      <a href="./" style="display: flex; align-items: center; min-height: 44px; flex: 1 0 90px;"><img src="./assets/convoy-logo-white.png" alt="Convoy" style="height: 20px; width: auto; display: block;"></a>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0 clamp(18px, 3vw, 44px); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;">
+        <a href="about" style="color: #ffffff; padding: 12px 0 5px; border-bottom: 1px solid transparent;" style-hover="border-bottom-color: #6E1423;">About</a>
+        <a href="gallery" style="color: #ffffff; padding: 12px 0 5px; border-bottom: 1px solid transparent;" style-hover="border-bottom-color: #6E1423;">Gallery</a>
+        <a href="https://events.humanitix.com/whatisartnostalgia" style="color: #ffffff; padding: 12px 0 5px; border-bottom: 1px solid transparent;" style-hover="border-bottom-color: #6E1423;">Events</a>
+        <a href="join" style="color: #ffffff; padding: 12px 0 5px; border-bottom: 1px solid transparent;" style-hover="border-bottom-color: #6E1423;">Join</a>
+      </div>
+      <div style="flex: 1 0 90px; height: 0;"></div>
+    </nav>
+
+    <div style="position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 clamp(20px, 5vw, 64px) clamp(84px, 12vh, 120px);">
+      <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: clamp(14px, 2.4vh, 26px);">Third spaces for the <strong style="font-weight: 800;">creatives</strong> of Sydney</div>
+      <h1 style="font-weight: 500; font-size: clamp(64px, 17vw, 280px); line-height: 0.8; letter-spacing: -0.035em; margin: 0 0 clamp(26px, 4.5vh, 48px);">CONVOY</h1>
+      <a href="https://events.humanitix.com/whatisartnostalgia" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #ffffff; padding-bottom: 7px; border-bottom: 1px solid #ffffff;" style-hover="color: #ffffff; border-bottom-color: #6E1423;">Next night</a>
+    </div>
+  </section>
+  <footer style="background: #0a0a0a; color: #ffffff; border-top: 1px solid rgba(255,255,255,0.18); padding: 34px clamp(20px, 5vw, 64px); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px 32px; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;">
+    <img src="./assets/convoy-logo-white.png" alt="Convoy" style="height: 18px; width: auto; display: block;">
+    <div style="display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline;"><span>Get in contact with us here!</span><a href="mailto:info@convoyevents.au" style="color: #ffffff; font-weight: 700; letter-spacing: 0.04em; text-transform: none; font-size: 15px; padding-bottom: 3px; border-bottom: 1px solid #ffffff;" style-hover="border-bottom-color: #6E1423;">info@convoyevents.au</a></div>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px 28px;"><a href="https://www.instagram.com/convoy.au/" target="_blank" rel="noopener" style="color: #ffffff; padding-bottom: 4px; border-bottom: 1px solid transparent;" style-hover="border-bottom-color: #6E1423;">Instagram</a><span>© 2026 Convoy</span></div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroVideo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { this.kickVideo(); }
+  componentDidUpdate() { this.kickVideo(); }
+
+  kickVideo() {
+    const v = document.getElementById('bg-video');
+    if (!v || v._kicked) return;
+    v._kicked = true;
+    v.muted = true; v.defaultMuted = true; v.playsInline = true;
+    v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
+    const tryPlay = () => { if (!v.paused) return; v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+    tryPlay();
+    v.addEventListener('canplay', tryPlay);
+    const evs = ['touchstart', 'pointerdown', 'scroll', 'keydown'];
+    evs.forEach(e => document.addEventListener(e, tryPlay, { passive: true }));
+    v.addEventListener('playing', () => evs.forEach(e => document.removeEventListener(e, tryPlay)), { once: true });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) tryPlay(); });
+  }
+
+  renderVals() { return { showVideo: this.props.heroVideo ?? true }; }
+}
+</script>
+</body>
+</html>
